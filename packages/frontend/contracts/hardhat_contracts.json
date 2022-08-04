@@ -1,7 +1,7 @@
 {
   "31337": [
     {
-      "name": "localhost",
+      "name": "hardhat",
       "chainId": "31337",
       "contracts": {
         "Greeter": {
