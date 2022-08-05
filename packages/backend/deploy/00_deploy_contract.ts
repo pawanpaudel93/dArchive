@@ -13,6 +13,14 @@ const deployDArchive: DeployFunction = async function ({ getNamedAccounts, deplo
     log: true,
     waitConfirmations: isDevelopmentNetwork ? 0 : 6,
   });
+
+  await deploy('Greeter', {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    args: ['Hello!!!!!!!!'],
+    from: deployer,
+    log: true,
+  });
+
   log(`Deployed DArchive at ${DArchive.address}`);
   if (!isDevelopmentNetwork) {
     log(`Waiting for DArchive to be mined for verification...`);

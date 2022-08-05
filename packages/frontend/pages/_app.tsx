@@ -21,7 +21,6 @@ import { useIsMounted } from '../hooks';
 
 // Get environment variables
 const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID as string;
-// const infuraId = process.env.NEXT_PUBLIC_INFURA_ID as string;
 
 const hardhatChain: Chain = {
   id: 31337,
@@ -39,12 +38,12 @@ const hardhatChain: Chain = {
 };
 
 const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum, hardhatChain],
+  [hardhatChain, chain.polygon, chain.polygonMumbai],
   [alchemyProvider({ alchemyId }), publicProvider()]
 );
 
 const { connectors } = getDefaultWallets({
-  appName: 'create-web3',
+  appName: 'dArchive',
   chains,
 });
 
@@ -62,7 +61,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider coolMode chains={chains}>
         <NextHead>
-          <title>create-web3</title>
+          <title>dArchive</title>
         </NextHead>
         <ChakraProvider>
           <Component {...pageProps} />

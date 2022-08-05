@@ -6,7 +6,7 @@ import "@nomiclabs/hardhat-ethers"
 import "dotenv/config"
 
 dotenv.config({ path: '../../.env' });
-const defaultNetwork = 'hardhat';
+const defaultNetwork = 'localhost';
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -19,7 +19,6 @@ const config: HardhatUserConfig = {
     localhost: {
       chainId: 31337,
     },
-    hardhat: {},
     polygon: {
       chainId: 137,
       url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`,
