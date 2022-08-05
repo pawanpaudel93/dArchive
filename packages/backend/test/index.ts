@@ -1,19 +1,21 @@
 import { expect } from "chai";
-import { ethers } from "hardhat";
+import { Contract } from "ethers";
+import { deployments, ethers } from "hardhat";
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    await greeter.deployed();
+describe("DArchive", function () {
+  let dArchive: Contract;
 
-    expect(await greeter.greet()).to.equal("Hello, world!");
+  before(async function () {
+    await deployments.fixture(["all"]);
+    dArchive = await ethers.getContract("DArchive");
+  })
 
-    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+  it("Should add new archive", async function () {
+    const contentID = "Qme7ss3ARVgxv6rXqVPiikMJ8u2NLgmgszg13pYrDKEoiu"
+    const contentURI = "https://google.com"
+    const addTx = await dArchive.addArchive(contentID, contentURI);
+    await addTx.wait();
 
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
-
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
-  });
-});
+    expect(addTx).to.emit(dArchive, "ArchiveAdded").withArgs(contentID, contentURI);
+  })
+})
