@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import isURL from "validator/lib/isURL";
 import { Formik, Form, Field } from "formik";
+import formidable, { IncomingForm } from "formidable";
 
 export const Save = () => {
   function validateURL(value: string) {
@@ -19,11 +20,33 @@ export const Save = () => {
     <Container>
       <Formik
         initialValues={{ url: "" }}
-        onSubmit={(values, actions) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            actions.setSubmitting(false);
-          }, 1000);
+        onSubmit={async (values, actions) => {
+          const { url } = values;
+          let response = await fetch("/api/html", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ url }),
+          });
+          const responseBody = await response.json();
+          console.log(
+            "responseBody: ",
+            responseBody,
+            response.status,
+            response.statusText
+          );
+          const blob = new Blob([responseBody.html], { type: "text/html" });
+          const file = new File([blob], "index.html");
+          const formData = new FormData();
+          formData.append("file", file);
+          console.log(formData, file);
+          response = await fetch("/api/web3upload", {
+            method: "POST",
+            body: formData,
+          });
+          console.log(await response.json());
+          actions.setSubmitting(false);
         }}
       >
         {(props) => (
