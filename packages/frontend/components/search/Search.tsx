@@ -32,7 +32,7 @@ export const Search = () => {
               {({ field, form }) => (
                 <FormControl isInvalid={form.errors.url && form.touched.url}>
                   <FormLabel>Search the archive for saved snapshots</FormLabel>
-                  <Input {...field} placeholder="url" />
+                  <Input {...field} placeholder="URL to archive" />
                   <FormErrorMessage>{form.errors.url}</FormErrorMessage>
                 </FormControl>
               )}

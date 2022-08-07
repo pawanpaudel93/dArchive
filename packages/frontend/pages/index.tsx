@@ -1,6 +1,4 @@
 import Head from "next/head";
-
-import { GetGreeter, SetGreeter } from "../components/contract";
 import { NavBar } from "../components/navigation";
 import { Save } from "@/components/save";
 import { Search } from "@/components/search";
@@ -27,9 +25,8 @@ export default function Home() {
         }}
       >
         <Save />
+        <br />
         <Search />
-        {/* <GetGreeter />
-        <SetGreeter /> */}
       </main>
     </div>
   );

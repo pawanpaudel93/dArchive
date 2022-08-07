@@ -2,7 +2,7 @@
 pragma solidity ^0.8.10;
 
 contract DArchive {
-    event ArchiveAdded(string contentID, string contentURI);
+    event ArchiveAdded(string contentID, string contentURI, uint256 timestamp);
     mapping(string => bool) public archiveAdded;
 
     constructor() {}
@@ -11,6 +11,6 @@ contract DArchive {
         public
     {
         require(archiveAdded[contentID] == false, "Archive already exists");
-        emit ArchiveAdded(contentID, contentURI);
+        emit ArchiveAdded(contentID, contentURI, block.timestamp);
     }
 }

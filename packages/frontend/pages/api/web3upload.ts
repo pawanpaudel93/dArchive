@@ -12,7 +12,7 @@ export const config = {
 type Data = {
   status: string;
   message: string;
-  contentURL: string;
+  contentID: string;
 };
 
 export default async function handler(
@@ -41,14 +41,14 @@ export default async function handler(
       res.status(200).json({
         status: "success",
         message: "Uploaded to Web3.Storage!",
-        contentURL: `https://dweb.link/ipfs/${cid}`,
+        contentID: cid,
       });
     } catch (err) {
       // console.log(err);
       res.status(500).json({
         status: "error",
         message: "Error uploading to Web3.Storage!",
-        contentURL: "",
+        contentID: "",
       });
     }
   }

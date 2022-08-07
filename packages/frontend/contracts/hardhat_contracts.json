@@ -26,6 +26,12 @@
                   "internalType": "string",
                   "name": "contentURI",
                   "type": "string"
+                },
+                {
+                  "indexed": false,
+                  "internalType": "uint256",
+                  "name": "timestamp",
+                  "type": "uint256"
                 }
               ],
               "name": "ArchiveAdded",
