@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.10;
 
+import "hardhat/console.sol";
+
 contract DArchive {
     event ArchiveAdded(string contentID, string contentURI, uint256 timestamp);
     mapping(string => bool) public archiveAdded;
@@ -12,5 +14,13 @@ contract DArchive {
     {
         require(archiveAdded[contentID] == false, "Archive already exists");
         emit ArchiveAdded(contentID, contentURI, block.timestamp);
+    }
+
+    fallback() external payable {
+        console.log("Fallback called");
+    }
+
+    receive() external payable {
+        console.log("Receive called");
     }
 }

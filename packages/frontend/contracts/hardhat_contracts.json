@@ -38,6 +38,10 @@
               "type": "event"
             },
             {
+              "stateMutability": "payable",
+              "type": "fallback"
+            },
+            {
               "inputs": [
                 {
                   "internalType": "string",
@@ -73,6 +77,10 @@
               ],
               "stateMutability": "view",
               "type": "function"
+            },
+            {
+              "stateMutability": "payable",
+              "type": "receive"
             }
           ]
         },

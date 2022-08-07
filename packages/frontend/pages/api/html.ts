@@ -1,11 +1,15 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
+import { Web3Storage, getFilesFromPath } from "web3.storage";
+import { temporaryWrite } from "tempy";
 import { execFile } from "promisify-child-process";
 import { resolve } from "path";
+import fsPromises from "node:fs/promises";
 
 type Data = {
   status: string;
-  html: string;
+  message: string;
+  contentID: string;
 };
 
 const SINGLEFILE_EXECUTABLE = resolve(
@@ -21,6 +25,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "POST") {
+    let tempPath;
     const url = req.body.url;
     try {
       const command = [
@@ -37,19 +42,38 @@ export default async function handler(
         }
       );
       if (stderr) {
-        res.status(500).json({
+        console.error(stderr);
+        return res.status(500).json({
           status: "error",
-          html: "",
+          message: stderr as string,
+          contentID: "",
         });
       }
-      res.status(200).json({
+      tempPath = await temporaryWrite(stdout as string, {
+        name: "index.html",
+      });
+      console.log(tempPath);
+      const client = new Web3Storage({ token: process.env.WEB3STORAGE_TOKEN });
+      const files = await getFilesFromPath(tempPath);
+      const cid = await client.put(files, {
+        wrapWithDirectory: false,
+        maxRetries: 3,
+      });
+      await fsPromises.rm(tempPath, { recursive: true, force: true });
+      return res.status(200).json({
         status: "success",
-        html: stdout as string,
+        message: "Uploaded to Web3.Storage!",
+        contentID: cid,
       });
     } catch (error) {
-      res.status(500).json({
+      console.error(error);
+      if (tempPath) {
+        await fsPromises.rm(tempPath, { recursive: true, force: true });
+      }
+      return res.status(500).json({
         status: "error",
-        html: "",
+        message: "Error uploading to Web3.Storage!",
+        contentID: "",
       });
     }
   }
