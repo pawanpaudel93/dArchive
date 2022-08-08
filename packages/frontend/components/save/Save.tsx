@@ -6,12 +6,14 @@ import {
   Input,
   Container,
   Center,
+  Progress,
 } from "@chakra-ui/react";
 import isURL from "validator/lib/isURL";
 import { Formik, Form, Field, FormikValues, FormikState } from "formik";
 import { NETWORK_ID } from "@/config";
 import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
 import contracts from "@/contracts/hardhat_contracts.json";
+import { useState } from "react";
 
 interface MyFormValues {
   url: string;
@@ -21,6 +23,7 @@ export const Save = () => {
   const initialValues: MyFormValues = { url: "" };
   const chainId = Number(NETWORK_ID);
   const { isConnected } = useAccount();
+  const [isLoading, setIsLoading] = useState(false);
 
   const allContracts = contracts as any;
   const dArchiveAddress = allContracts[chainId][0].contracts.DArchive.address;
@@ -45,6 +48,7 @@ export const Save = () => {
       setSubmitting: (isSubmitting: boolean) => void;
     }
   ) => {
+    setIsLoading(true);
     try {
       const { url } = values;
       const response = await fetch("/api/html", {
@@ -66,6 +70,7 @@ export const Save = () => {
       console.log(error);
     }
     actions.setSubmitting(false);
+    setIsLoading(false);
   };
 
   return (
@@ -90,6 +95,7 @@ export const Save = () => {
                 </FormControl>
               )}
             </Field>
+            {isLoading && <Progress size="xs" isIndeterminate />}
             <Center>
               <Button
                 mt={4}

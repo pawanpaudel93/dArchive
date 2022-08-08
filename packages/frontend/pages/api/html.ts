@@ -1,7 +1,6 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Web3Storage, getFilesFromPath } from "web3.storage";
-import { temporaryWrite } from "tempy";
+import { temporaryFile } from "tempy";
 import { execFile } from "promisify-child-process";
 import { resolve } from "path";
 import fsPromises from "node:fs/promises";
@@ -25,22 +24,16 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "POST") {
-    let tempPath;
+    let tempPath = temporaryFile({ name: "index.html" });
     const url = req.body.url;
     try {
       const command = [
         `--browser-executable-path=${BROWSER_PATH}`,
         `--browser-args='${BROWSER_ARGS}'`,
         url,
-        `--dump-content`,
+        `--output=${tempPath}`,
       ];
-      const { stdout, stderr } = await execFile(
-        SINGLEFILE_EXECUTABLE,
-        command,
-        {
-          maxBuffer: 1024 * 1024 * 10,
-        }
-      );
+      const { stderr } = await execFile(SINGLEFILE_EXECUTABLE, command);
       if (stderr) {
         console.error(stderr);
         return res.status(500).json({
@@ -49,10 +42,6 @@ export default async function handler(
           contentID: "",
         });
       }
-      tempPath = await temporaryWrite(stdout as string, {
-        name: "index.html",
-      });
-      console.log(tempPath);
       const client = new Web3Storage({ token: process.env.WEB3STORAGE_TOKEN });
       const files = await getFilesFromPath(tempPath);
       const cid = await client.put(files, {
