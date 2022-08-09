@@ -12,7 +12,7 @@ import { useToast } from "@chakra-ui/react";
 import isURL from "validator/lib/isURL";
 import { Formik, Form, Field, FormikValues, FormikState } from "formik";
 import { NETWORK_ID } from "@/config";
-import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
+import { useAccount, useContractWrite } from "wagmi";
 import contracts from "@/contracts/hardhat_contracts.json";
 import { useState } from "react";
 
@@ -31,14 +31,13 @@ export const Save = () => {
   const dArchiveAddress = allContracts[chainId][0].contracts.DArchive.address;
   const dArchiveABI = allContracts[chainId][0].contracts.DArchive.abi;
 
-  const { config } = usePrepareContractWrite({
+  const { writeAsync } = useContractWrite({
+    mode: "recklesslyUnprepared",
     addressOrName: dArchiveAddress,
     contractInterface: dArchiveABI,
     functionName: "addArchive",
     args: ["", "", ""],
   });
-
-  const { writeAsync } = useContractWrite(config);
 
   function validateURL(value: string) {
     return isURL(value) ? undefined : "Invalid URL";
@@ -63,7 +62,7 @@ export const Save = () => {
       const { contentID, title } = await response.json();
       console.log("contentID: ", contentID);
       if (contentID) {
-        const tx = await writeAsync?.({
+        const tx = await writeAsync({
           recklesslySetUnpreparedArgs: [contentID, url, title],
         });
         await tx?.wait();
