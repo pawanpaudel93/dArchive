@@ -35,7 +35,7 @@ export const Save = () => {
     addressOrName: dArchiveAddress,
     contractInterface: dArchiveABI,
     functionName: "addArchive",
-    args: ["", ""],
+    args: ["", "", ""],
   });
 
   const { writeAsync } = useContractWrite(config);
@@ -60,11 +60,11 @@ export const Save = () => {
         },
         body: JSON.stringify({ url }),
       });
-      const { contentID } = await response.json();
+      const { contentID, title } = await response.json();
       console.log("contentID: ", contentID);
       if (contentID) {
         const tx = await writeAsync?.({
-          recklesslySetUnpreparedArgs: [contentID, url],
+          recklesslySetUnpreparedArgs: [contentID, url, title],
         });
         await tx?.wait();
         toast({
