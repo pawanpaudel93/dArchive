@@ -8,6 +8,7 @@ import {
   Center,
   Progress,
 } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
 import isURL from "validator/lib/isURL";
 import { Formik, Form, Field, FormikValues, FormikState } from "formik";
 import { NETWORK_ID } from "@/config";
@@ -20,6 +21,7 @@ interface MyFormValues {
 }
 
 export const Save = () => {
+  const toast = useToast();
   const initialValues: MyFormValues = { url: "" };
   const chainId = Number(NETWORK_ID);
   const { isConnected } = useAccount();
@@ -65,9 +67,21 @@ export const Save = () => {
           recklesslySetUnpreparedArgs: [contentID, url],
         });
         await tx?.wait();
+        toast({
+          title: "Saved successfully",
+          status: "success",
+          position: "top-right",
+          isClosable: true,
+        });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      toast({
+        title: error?.message || "Something went wrong",
+        status: "error",
+        position: "top-right",
+        isClosable: true,
+      });
     }
     actions.setSubmitting(false);
     setIsLoading(false);

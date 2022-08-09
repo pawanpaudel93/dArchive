@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Web3Storage, getFilesFromPath } from "web3.storage";
-import { parse } from 'node-html-parser';
+import { parse } from "node-html-parser";
 import { temporaryDirectory } from "tempy";
 import { execFile } from "promisify-child-process";
 import { resolve } from "path";
@@ -50,15 +50,17 @@ export default async function handler(
       }
       const client = new Web3Storage({ token: process.env.WEB3STORAGE_TOKEN });
       const files = await getFilesFromPath(tempDirectory);
-      console.log(files);
+      // console.log(files);
       const cid = await client.put(files, {
         wrapWithDirectory: false,
         maxRetries: 3,
       });
-      const html = await fsPromises.readFile(resolve(tempDirectory, "index.html"));
+      const html = await fsPromises.readFile(
+        resolve(tempDirectory, "index.html")
+      );
       const parsed = parse(html.toString());
       const title = parsed.querySelector("title")?.text ?? "";
-      console.log(title);
+      // console.log(title);
       await fsPromises.rm(tempDirectory, { recursive: true, force: true });
       return res.status(200).json({
         status: "success",
