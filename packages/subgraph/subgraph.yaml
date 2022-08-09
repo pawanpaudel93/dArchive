@@ -6,18 +6,19 @@ dataSources:
     name: DArchive
     network: mumbai
     source:
-      address: "0xcb2c85E4216Bd207CF26464B3dDed13d738a552B"
+      address: "0x0D9eFE173CA5BF888523AD592774585bDd3e6057"
       abi: DArchive
+      startBlock: 27546194
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - ArchiveAdded
+        - Archive
       abis:
         - name: DArchive
           file: ./abis/DArchive.json
       eventHandlers:
-        - event: ArchiveAdded(string,string,string,uint256)
+        - event: ArchiveAdded(uint256,string,string,string,uint256)
           handler: handleArchiveAdded
       file: ./src/d-archive.ts

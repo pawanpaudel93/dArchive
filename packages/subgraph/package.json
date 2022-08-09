@@ -1,7 +1,7 @@
 {
   "name": "subgraph",
+  "description": "subgraph",
   "private": true,
-  "description": "",
   "version": "1.0.0",
   "scripts": {
     "codegen": "graph codegen",

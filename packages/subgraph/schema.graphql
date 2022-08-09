@@ -1,6 +1,7 @@
-type ExampleEntity @entity {
+type Archive @entity {
   id: ID!
-  count: BigInt!
-  contentID: String! # string
-  contentURI: String! # string
+  timestamp: BigInt!
+  title: String!
+  contentID: String!
+  contentURI: String!
 }

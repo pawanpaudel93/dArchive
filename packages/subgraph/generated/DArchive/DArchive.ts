@@ -23,20 +23,24 @@ export class ArchiveAdded__Params {
     this._event = event;
   }
 
-  get contentID(): string {
-    return this._event.parameters[0].value.toString();
+  get ID(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
   }
 
-  get contentURI(): string {
+  get contentID(): string {
     return this._event.parameters[1].value.toString();
   }
 
-  get title(): string {
+  get contentURI(): string {
     return this._event.parameters[2].value.toString();
   }
 
+  get title(): string {
+    return this._event.parameters[3].value.toString();
+  }
+
   get timestamp(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
+    return this._event.parameters[4].value.toBigInt();
   }
 }
 
@@ -62,6 +66,25 @@ export class DArchive extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBoolean());
+  }
+
+  totalArchives(): BigInt {
+    let result = super.call("totalArchives", "totalArchives():(uint256)", []);
+
+    return result[0].toBigInt();
+  }
+
+  try_totalArchives(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "totalArchives",
+      "totalArchives():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 }
 

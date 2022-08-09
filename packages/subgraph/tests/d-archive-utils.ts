@@ -3,6 +3,7 @@ import { ethereum, BigInt } from "@graphprotocol/graph-ts"
 import { ArchiveAdded } from "../generated/DArchive/DArchive"
 
 export function createArchiveAddedEvent(
+  ID: BigInt,
   contentID: string,
   contentURI: string,
   title: string,
@@ -12,6 +13,9 @@ export function createArchiveAddedEvent(
 
   archiveAddedEvent.parameters = new Array()
 
+  archiveAddedEvent.parameters.push(
+    new ethereum.EventParam("ID", ethereum.Value.fromUnsignedBigInt(ID))
+  )
   archiveAddedEvent.parameters.push(
     new ethereum.EventParam("contentID", ethereum.Value.fromString(contentID))
   )

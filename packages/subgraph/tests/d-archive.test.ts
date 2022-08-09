@@ -17,11 +17,13 @@ import { createArchiveAddedEvent } from "./d-archive-utils"
 
 describe("Describe entity assertions", () => {
   beforeAll(() => {
+    let ID = BigInt.fromI32(234)
     let contentID = "Example string value"
     let contentURI = "Example string value"
     let title = "Example string value"
     let timestamp = BigInt.fromI32(234)
     let newArchiveAddedEvent = createArchiveAddedEvent(
+      ID,
       contentID,
       contentURI,
       title,
@@ -41,6 +43,12 @@ describe("Describe entity assertions", () => {
     assert.entityCount("ExampleEntity", 1)
 
     // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
+    assert.fieldEquals(
+      "ExampleEntity",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a",
+      "ID",
+      "234"
+    )
     assert.fieldEquals(
       "ExampleEntity",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a",
