@@ -1,18 +1,26 @@
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import "hardhat-deploy"
-import "@nomiclabs/hardhat-ethers"
-import "dotenv/config"
+import "hardhat-deploy";
+import "@nomiclabs/hardhat-ethers";
+import "dotenv/config";
 
-dotenv.config({ path: '../../.env' });
-const defaultNetwork = 'localhost';
+dotenv.config({ path: "../../.env" });
+const defaultNetwork = "localhost";
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
 const config: HardhatUserConfig = {
-  solidity: '0.8.10',
+  solidity: {
+    version: "0.8.10",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+    },
+  },
   defaultNetwork,
 
   networks: {
@@ -40,7 +48,7 @@ const config: HardhatUserConfig = {
     apiKey: {
       polygonMumbai: process.env.POLYGONSCAN_KEY!,
     },
-  }
+  },
 };
 
 export default config;
