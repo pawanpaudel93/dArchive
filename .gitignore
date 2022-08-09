@@ -31,6 +31,10 @@ artifacts
 packages/frontend/.next/
 /out/
 
+# subgraph
+/packages/subgraph/node_modules
+/packages/subgraph/build
+
 # vite
 
 /packages/frontend/node_modules

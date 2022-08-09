@@ -1,0 +1,23 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: DArchive
+    network: mumbai
+    source:
+      address: "0xcb2c85E4216Bd207CF26464B3dDed13d738a552B"
+      abi: DArchive
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - ArchiveAdded
+      abis:
+        - name: DArchive
+          file: ./abis/DArchive.json
+      eventHandlers:
+        - event: ArchiveAdded(string,string,string,uint256)
+          handler: handleArchiveAdded
+      file: ./src/d-archive.ts

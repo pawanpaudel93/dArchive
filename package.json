@@ -5,15 +5,15 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "yarn workspace @create-web3/frontend dev",
-    "build": "yarn workspace @create-web3/frontend build",
-    "start": "yarn workspace @create-web3/frontend start",
-    "lint": "yarn workspace @create-web3/frontend lint",
-    "chain": "yarn workspace @create-web3/backend chain",
-    "compile": "yarn workspace @create-web3/backend compile",
-    "test": "yarn workspace @create-web3/backend test",
-    "clean": "yarn workspace @create-web3/backend clean",
-    "deploy": "yarn workspace @create-web3/backend deploy"
+    "dev": "yarn workspace frontend dev",
+    "build": "yarn workspace frontend build",
+    "start": "yarn workspace frontend start",
+    "lint": "yarn workspace frontend lint",
+    "chain": "yarn workspace backend chain",
+    "compile": "yarn workspace backend compile",
+    "test": "yarn workspace backend test",
+    "clean": "yarn workspace backend clean",
+    "deploy": "yarn workspace backend deploy"
   },
   "workspaces": {
     "packages": [
