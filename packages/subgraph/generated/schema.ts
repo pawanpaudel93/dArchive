@@ -8,8 +8,58 @@ import {
   store,
   Bytes,
   BigInt,
-  BigDecimal,
+  BigDecimal
 } from "@graphprotocol/graph-ts";
+
+export class Url extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Url entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Url must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Url", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Url | null {
+    return changetype<Url | null>(store.get("Url", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get url(): string {
+    let value = this.get("url");
+    return value!.toString();
+  }
+
+  set url(value: string) {
+    this.set("url", Value.fromString(value));
+  }
+
+  get archives(): Array<string> {
+    let value = this.get("archives");
+    return value!.toStringArray();
+  }
+
+  set archives(value: Array<string>) {
+    this.set("archives", Value.fromStringArray(value));
+  }
+}
 
 export class Archive extends Entity {
   constructor(id: string) {
