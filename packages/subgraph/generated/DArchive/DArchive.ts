@@ -7,7 +7,7 @@ import {
   Entity,
   Bytes,
   Address,
-  BigInt
+  BigInt,
 } from "@graphprotocol/graph-ts";
 
 export class ArchiveAdded extends ethereum.Event {
@@ -31,7 +31,7 @@ export class ArchiveAdded__Params {
     return this._event.parameters[1].value.toString();
   }
 
-  get contentURI(): string {
+  get contentURL(): string {
     return this._event.parameters[2].value.toString();
   }
 
@@ -51,7 +51,7 @@ export class DArchive extends ethereum.SmartContract {
 
   archiveAdded(param0: string): boolean {
     let result = super.call("archiveAdded", "archiveAdded(string):(bool)", [
-      ethereum.Value.fromString(param0)
+      ethereum.Value.fromString(param0),
     ]);
 
     return result[0].toBoolean();
@@ -59,7 +59,7 @@ export class DArchive extends ethereum.SmartContract {
 
   try_archiveAdded(param0: string): ethereum.CallResult<boolean> {
     let result = super.tryCall("archiveAdded", "archiveAdded(string):(bool)", [
-      ethereum.Value.fromString(param0)
+      ethereum.Value.fromString(param0),
     ]);
     if (result.reverted) {
       return new ethereum.CallResult();
@@ -135,7 +135,7 @@ export class AddArchiveCall__Inputs {
     return this._call.inputValues[0].value.toString();
   }
 
-  get contentURI(): string {
+  get contentURL(): string {
     return this._call.inputValues[1].value.toString();
   }
 

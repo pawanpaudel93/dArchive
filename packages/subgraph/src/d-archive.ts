@@ -10,7 +10,7 @@ export function handleArchiveAdded(event: ArchiveAddedEvent): void {
     archive.title = event.params.title;
     archive.timestamp = event.params.timestamp;
     archive.contentID = event.params.contentID;
-    archive.contentURI = event.params.contentURI;
+    archive.contentURL = event.params.contentURL;
 
     archive.save();
   }

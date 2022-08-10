@@ -8,7 +8,7 @@ import {
   store,
   Bytes,
   BigInt,
-  BigDecimal
+  BigDecimal,
 } from "@graphprotocol/graph-ts";
 
 export class Archive extends Entity {
@@ -69,12 +69,12 @@ export class Archive extends Entity {
     this.set("contentID", Value.fromString(value));
   }
 
-  get contentURI(): string {
-    let value = this.get("contentURI");
+  get contentURL(): string {
+    let value = this.get("contentURL");
     return value!.toString();
   }
 
-  set contentURI(value: string) {
-    this.set("contentURI", Value.fromString(value));
+  set contentURL(value: string) {
+    this.set("contentURL", Value.fromString(value));
   }
 }

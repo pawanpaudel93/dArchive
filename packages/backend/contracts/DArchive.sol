@@ -9,7 +9,7 @@ contract DArchive {
     event ArchiveAdded(
         uint256 ID,
         string contentID,
-        string contentURI,
+        string contentURL,
         string title,
         uint256 timestamp
     );
@@ -21,7 +21,7 @@ contract DArchive {
 
     function addArchive(
         string calldata contentID,
-        string calldata contentURI,
+        string calldata contentURL,
         string calldata title
     ) public {
         require(archiveAdded[contentID] == false, "Archive already exists");
@@ -29,7 +29,7 @@ contract DArchive {
         emit ArchiveAdded(
             totalArchives.current(),
             contentID,
-            contentURI,
+            contentURL,
             title,
             block.timestamp
         );

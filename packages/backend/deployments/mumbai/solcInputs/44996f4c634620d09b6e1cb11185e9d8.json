@@ -2,7 +2,7 @@
   "language": "Solidity",
   "sources": {
     "contracts/DArchive.sol": {
-      "content": "//SPDX-License-Identifier: MIT\npragma solidity ^0.8.10;\n\ncontract DArchive {\n    event ArchiveAdded(\n        string contentID,\n        string contentURI,\n        string title,\n        uint256 timestamp\n    );\n    mapping(string => bool) public archiveAdded;\n\n    constructor() {}\n\n    function addArchive(\n        string calldata contentID,\n        string calldata contentURI,\n        string calldata title\n    ) public {\n        require(archiveAdded[contentID] == false, \"Archive already exists\");\n        emit ArchiveAdded(contentID, contentURI, title, block.timestamp);\n    }\n}\n"
+      "content": "//SPDX-License-Identifier: MIT\npragma solidity ^0.8.10;\n\ncontract DArchive {\n    event ArchiveAdded(\n        string contentID,\n        string contentURL,\n        string title,\n        uint256 timestamp\n    );\n    mapping(string => bool) public archiveAdded;\n\n    constructor() {}\n\n    function addArchive(\n        string calldata contentID,\n        string calldata contentURL,\n        string calldata title\n    ) public {\n        require(archiveAdded[contentID] == false, \"Archive already exists\");\n        emit ArchiveAdded(contentID, contentURL, title, block.timestamp);\n    }\n}\n"
     }
   },
   "settings": {
@@ -23,9 +23,7 @@
           "storageLayout",
           "evm.gasEstimates"
         ],
-        "": [
-          "ast"
-        ]
+        "": ["ast"]
       }
     },
     "metadata": {

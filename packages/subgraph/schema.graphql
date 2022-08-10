@@ -3,5 +3,5 @@ type Archive @entity {
   timestamp: BigInt!
   title: String!
   contentID: String!
-  contentURI: String!
+  contentURL: String!
 }

@@ -1,36 +1,36 @@
-import { newMockEvent } from "matchstick-as"
-import { ethereum, BigInt } from "@graphprotocol/graph-ts"
-import { ArchiveAdded } from "../generated/DArchive/DArchive"
+import { newMockEvent } from "matchstick-as";
+import { ethereum, BigInt } from "@graphprotocol/graph-ts";
+import { ArchiveAdded } from "../generated/DArchive/DArchive";
 
 export function createArchiveAddedEvent(
   ID: BigInt,
   contentID: string,
-  contentURI: string,
+  contentURL: string,
   title: string,
   timestamp: BigInt
 ): ArchiveAdded {
-  let archiveAddedEvent = changetype<ArchiveAdded>(newMockEvent())
+  let archiveAddedEvent = changetype<ArchiveAdded>(newMockEvent());
 
-  archiveAddedEvent.parameters = new Array()
+  archiveAddedEvent.parameters = new Array();
 
   archiveAddedEvent.parameters.push(
     new ethereum.EventParam("ID", ethereum.Value.fromUnsignedBigInt(ID))
-  )
+  );
   archiveAddedEvent.parameters.push(
     new ethereum.EventParam("contentID", ethereum.Value.fromString(contentID))
-  )
+  );
   archiveAddedEvent.parameters.push(
-    new ethereum.EventParam("contentURI", ethereum.Value.fromString(contentURI))
-  )
+    new ethereum.EventParam("contentURL", ethereum.Value.fromString(contentURL))
+  );
   archiveAddedEvent.parameters.push(
     new ethereum.EventParam("title", ethereum.Value.fromString(title))
-  )
+  );
   archiveAddedEvent.parameters.push(
     new ethereum.EventParam(
       "timestamp",
       ethereum.Value.fromUnsignedBigInt(timestamp)
     )
-  )
+  );
 
-  return archiveAddedEvent
+  return archiveAddedEvent;
 }
