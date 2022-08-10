@@ -12,9 +12,9 @@ import {
 } from "@graphprotocol/graph-ts";
 
 export class Url extends Entity {
-  constructor(id: string) {
+  constructor(id: Bytes) {
     super();
-    this.set("id", Value.fromString(id));
+    this.set("id", Value.fromBytes(id));
   }
 
   save(): void {
@@ -22,24 +22,24 @@ export class Url extends Entity {
     assert(id != null, "Cannot save Url entity without an ID");
     if (id) {
       assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type Url must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        id.kind == ValueKind.BYTES,
+        `Entities of type Url must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("Url", id.toString(), this);
+      store.set("Url", id.toBytes().toHexString(), this);
     }
   }
 
-  static load(id: string): Url | null {
-    return changetype<Url | null>(store.get("Url", id));
+  static load(id: Bytes): Url | null {
+    return changetype<Url | null>(store.get("Url", id.toHexString()));
   }
 
-  get id(): string {
+  get id(): Bytes {
     let value = this.get("id");
-    return value!.toString();
+    return value!.toBytes();
   }
 
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
   }
 
   get url(): string {
@@ -119,12 +119,12 @@ export class Archive extends Entity {
     this.set("contentID", Value.fromString(value));
   }
 
-  get contentURL(): string {
+  get contentURL(): Bytes {
     let value = this.get("contentURL");
-    return value!.toString();
+    return value!.toBytes();
   }
 
-  set contentURL(value: string) {
-    this.set("contentURL", Value.fromString(value));
+  set contentURL(value: Bytes) {
+    this.set("contentURL", Value.fromBytes(value));
   }
 }
