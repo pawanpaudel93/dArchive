@@ -59,7 +59,7 @@ export default async function handler(
         resolve(tempDirectory, "index.html")
       );
       const parsed = parse(html.toString());
-      const title = parsed.querySelector("title")?.text ?? "";
+      const title = parsed.querySelector("title")?.text.trim() ?? "";
       // console.log(title);
       await fsPromises.rm(tempDirectory, { recursive: true, force: true });
       return res.status(200).json({
