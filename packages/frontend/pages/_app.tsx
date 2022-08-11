@@ -2,10 +2,8 @@ import * as React from "react";
 import type { AppProps } from "next/app";
 import NextHead from "next/head";
 import "../styles/globals.css";
-
 import { ChakraProvider } from "@chakra-ui/react";
-
-// Imports
+import { withUrqlClient } from 'next-urql'
 import { chain, createClient, WagmiConfig, configureChains } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
@@ -18,6 +16,7 @@ import {
 } from "@rainbow-me/rainbowkit";
 
 import { useIsMounted } from "../hooks";
+import { cacheExchange, dedupExchange, fetchExchange } from "urql";
 
 // Get environment variables
 const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID as string;
@@ -71,4 +70,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-export default App;
+export default withUrqlClient((ssrExchange) => ({
+  url: "https://api.thegraph.com/subgraphs/name/pawanpaudel93/darchive",
+  exchanges: [ssrExchange, dedupExchange, cacheExchange, fetchExchange],
+}))(App);

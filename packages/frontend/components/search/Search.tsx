@@ -8,9 +8,31 @@ import {
   Center,
 } from "@chakra-ui/react";
 import isURL from "validator/lib/isURL";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, FormikState } from "formik";
+import { useClient } from "urql";
+
+interface MyFormValues {
+  url: string;
+}
+
+const query = `
+query ($url: String!) {
+  urls(where: {url: $url}) {
+    id
+    url
+    archives {
+      id
+      timestamp
+      title
+      contentID
+    }
+  }
+}
+`;
 
 export const Search = () => {
+  const client = useClient();
+
   function validateURL(value: string) {
     return isURL(value) ? undefined : "Invalid URL";
   }
@@ -19,18 +41,30 @@ export const Search = () => {
     <Container>
       <Formik
         initialValues={{ url: "" }}
-        onSubmit={(values, actions) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            actions.setSubmitting(false);
-          }, 1000);
+        onSubmit={async (values, actions) => {
+          const { url } = values;
+          const response = await client
+            .query(query, {
+              url,
+            })
+            .toPromise();
+          console.log(response);
+          actions.setSubmitting(false);
         }}
       >
         {(props) => (
           <Form>
             <Field name="url" validate={validateURL}>
-              {({ field, form }) => (
-                <FormControl isInvalid={form.errors.url && form.touched.url}>
+              {({
+                field,
+                form,
+              }: {
+                field: { name: string; value: string };
+                form: FormikState<MyFormValues>;
+              }) => (
+                <FormControl
+                  isInvalid={!!form.errors.url && !!form.touched.url}
+                >
                   <FormLabel>Search the archive for saved snapshots</FormLabel>
                   <Input {...field} placeholder="URL to archive" />
                   <FormErrorMessage>{form.errors.url}</FormErrorMessage>
