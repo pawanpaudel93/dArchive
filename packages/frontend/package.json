@@ -16,12 +16,15 @@
     "@emotion/styled": "^11.9.3",
     "@rainbow-me/rainbowkit": "^0.4.2",
     "ethers": "^5.6.9",
+    "file-saver": "^2.0.5",
     "form-data": "^4.0.0",
     "formik": "^2.2.9",
     "framer-motion": "^6.4.3",
+    "html-react-parser": "^3.0.1",
     "humanize-duration": "^3.27.2",
     "next": "12.1.6",
     "next-urql": "^3.3.3",
+    "nextjs-progressbar": "^0.0.14",
     "node-html-parser": "^5.3.3",
     "promisify-child-process": "^4.1.1",
     "react": "^18.2.0",
@@ -34,6 +37,7 @@
     "web3.storage": "^4.3.0"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.5",
     "@types/formidable": "^2.0.5",
     "@types/humanize-duration": "^3.27.1",
     "@types/node": "^18.0.0",

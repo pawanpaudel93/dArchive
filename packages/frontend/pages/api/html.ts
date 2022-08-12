@@ -35,8 +35,6 @@ export default async function handler(
         url,
         `--output=${resolve(tempDirectory, "index.html")}`,
         `--screenshot-path=${resolve(tempDirectory, "screenshot.png")}`,
-        `--browser-width=1920`,
-        `--browser-height=1080`,
       ];
       const { stderr } = await execFile(SINGLEFILE_EXECUTABLE, command);
       if (stderr) {

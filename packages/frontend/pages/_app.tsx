@@ -7,14 +7,14 @@ import { withUrqlClient } from 'next-urql'
 import { chain, createClient, WagmiConfig, configureChains } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
-
+import NextNProgress from 'nextjs-progressbar'
+import { NavBar } from "../components/navigation";
 import "@rainbow-me/rainbowkit/styles.css";
 import {
   getDefaultWallets,
   RainbowKitProvider,
   Chain,
 } from "@rainbow-me/rainbowkit";
-
 import { useIsMounted } from "../hooks";
 import { cacheExchange, dedupExchange, fetchExchange } from "urql";
 
@@ -38,7 +38,7 @@ const hardhatChain: Chain = {
 
 const { chains, provider } = configureChains(
   [hardhatChain, chain.polygon, chain.polygonMumbai],
-  [alchemyProvider({ alchemyId }), publicProvider()]
+  [alchemyProvider({ apiKey: alchemyId }), publicProvider()]
 );
 
 const { connectors } = getDefaultWallets({
@@ -63,7 +63,14 @@ const App = ({ Component, pageProps }: AppProps) => {
           <title>dArchive</title>
         </NextHead>
         <ChakraProvider>
-          <Component {...pageProps} />
+          <NextNProgress />
+          <NavBar />
+          <div
+            className="md:px-6 py-2 min-h-screen"
+            style={{ marginTop: '70px' }}
+          >
+            <Component {...pageProps} />
+          </div>
         </ChakraProvider>
       </RainbowKitProvider>
     </WagmiConfig>

@@ -9,10 +9,12 @@ import {
   ModalFooter,
   HStack,
   Progress,
+  Link,
 } from "@chakra-ui/react";
 import React from "react";
 import humanizeDuration from "humanize-duration";
 import { IArchive } from "@/interfaces";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 export const ResaveModal = ({
   onClose,
@@ -42,6 +44,9 @@ export const ResaveModal = ({
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Link href={"/archives/" + archive.contentID} isExternal>
+              View <ExternalLinkIcon mx="2px" />
+            </Link>
             <HStack spacing={4}>
               <p>Would you like to resave it?</p>
               {isLoading && <Progress size="xs" isIndeterminate />}
@@ -50,7 +55,7 @@ export const ResaveModal = ({
           <ModalFooter>
             <HStack spacing={2}>
               <Button colorScheme="red" onClick={onClose}>
-                Close
+                Cancel
               </Button>
               <Button
                 colorScheme="blue"
