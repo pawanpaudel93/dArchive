@@ -31,7 +31,7 @@ query ($url: String!) {
   urls(where: {url: $url}) {
     id
     url
-    archives {
+    archives(orderBy: timestamp, orderDirection: desc, first: 1 ) {
       id
       timestamp
       title
@@ -122,10 +122,7 @@ export const Save = () => {
         })
         .toPromise();
       if (response.data.urls.length > 0) {
-        const tempArchive =
-          response.data.urls[0].archives[
-            response.data.urls[0].archives.length - 1
-          ];
+        const tempArchive = response.data.urls[0].archives[0];
         setArchive({
           id: tempArchive.id,
           timestamp: tempArchive.timestamp,
