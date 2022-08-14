@@ -1,5 +1,5 @@
 import { Save } from "@/components/save";
-import { Search } from "@/components/search";
+// import { Search } from "@/components/search";
 
 export default function Home() {
   return (
@@ -14,8 +14,8 @@ export default function Home() {
       }}
     >
       <Save />
-      <br />
-      <Search />
+      {/* <br /> */}
+      {/* <Search /> */}
     </div>
   );
 }

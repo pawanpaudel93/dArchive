@@ -18,7 +18,7 @@ interface MyFormValues {
 
 const query = `
 query ($url: String!) {
-  urls(where: {url: $url}) {
+  urls(where: {url_starts_with_nocase: $url}) {
     id
     url
     archives {

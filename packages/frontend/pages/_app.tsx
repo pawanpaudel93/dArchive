@@ -66,7 +66,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           <NextNProgress />
           <NavBar />
           <div
-            className="md:px-6 py-2 min-h-screen"
+            className="py-2 min-h-screen"
             style={{ marginTop: '70px' }}
           >
             <Component {...pageProps} />
