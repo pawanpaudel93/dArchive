@@ -1,14 +1,23 @@
 [
-  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "contentID",
+        "type": "string"
+      }
+    ],
+    "name": "AlreadyArchived",
+    "type": "error"
+  },
   {
     "anonymous": false,
     "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "ID",
-        "type": "uint256"
-      },
       {
         "indexed": false,
         "internalType": "string",
@@ -26,12 +35,6 @@
         "internalType": "string",
         "name": "title",
         "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "timestamp",
-        "type": "uint256"
       }
     ],
     "name": "ArchiveAdded",
@@ -39,9 +42,21 @@
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "contentID", "type": "string" },
-      { "internalType": "string", "name": "contentURL", "type": "string" },
-      { "internalType": "string", "name": "title", "type": "string" }
+      {
+        "internalType": "string",
+        "name": "contentID",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "contentURL",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "title",
+        "type": "string"
+      }
     ],
     "name": "addArchive",
     "outputs": [],
@@ -49,17 +64,20 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
     "name": "archiveAdded",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "totalArchives",
     "outputs": [
-      { "internalType": "uint256", "name": "_value", "type": "uint256" }
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
     ],
     "stateMutability": "view",
     "type": "function"

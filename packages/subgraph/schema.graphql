@@ -1,5 +1,5 @@
 type Url @entity {
-  id: Bytes!
+  id: ID!
   url: String!
   archives: [Archive!]! @derivedFrom(field: "contentURL")
 }
