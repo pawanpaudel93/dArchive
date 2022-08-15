@@ -172,7 +172,9 @@ export const Save = () => {
                   </FormControl>
                 )}
               </Field>
-              {isLoading && <Progress size="xs" isIndeterminate />}
+              {isLoading && (
+                <Progress size="xs" isIndeterminate hasStripe isAnimated />
+              )}
               <Center>
                 {isConnected ? (
                   <Button
