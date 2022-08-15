@@ -115,7 +115,7 @@
       "chainId": "80001",
       "contracts": {
         "DArchive": {
-          "address": "0x29da75f679d4189dcB4Be4b72ea8EBb14Be58A97",
+          "address": "0xdc66B8EA8e71786c94fDd8B45e2C6CEE20bCC7E1",
           "abi": [
             {
               "inputs": [],
@@ -123,14 +123,19 @@
               "type": "constructor"
             },
             {
-              "anonymous": false,
               "inputs": [
                 {
-                  "indexed": false,
-                  "internalType": "uint256",
-                  "name": "ID",
-                  "type": "uint256"
-                },
+                  "internalType": "string",
+                  "name": "contentID",
+                  "type": "string"
+                }
+              ],
+              "name": "AlreadyArchived",
+              "type": "error"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
                 {
                   "indexed": false,
                   "internalType": "string",
@@ -148,12 +153,6 @@
                   "internalType": "string",
                   "name": "title",
                   "type": "string"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "uint256",
-                  "name": "timestamp",
-                  "type": "uint256"
                 }
               ],
               "name": "ArchiveAdded",
@@ -196,19 +195,6 @@
                   "internalType": "bool",
                   "name": "",
                   "type": "bool"
-                }
-              ],
-              "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [],
-              "name": "totalArchives",
-              "outputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "_value",
-                  "type": "uint256"
                 }
               ],
               "stateMutability": "view",

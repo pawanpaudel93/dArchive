@@ -13,14 +13,12 @@ describe("DArchive", function () {
   it("Should add new archive", async function () {
     const contentID = "Qme7ss3ARVgxv6rXqVPiikMJ8u2NLgmgszg13pYrDKEoiu";
     const contentURL = "https://google.com";
-    const id = 1;
-    const timestamp = Math.floor(new Date().getTime() / 1000);
     const title = "Google";
     const addTx = await dArchive.addArchive(contentID, contentURL, title);
     await addTx.wait();
 
     expect(addTx)
       .to.emit(dArchive, "ArchiveAdded")
-      .withArgs(id, contentID, contentURL, title, timestamp);
+      .withArgs(contentID, contentURL, title);
   });
 });
