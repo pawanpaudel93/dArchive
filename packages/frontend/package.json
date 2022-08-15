@@ -21,7 +21,6 @@
     "form-data": "^4.0.0",
     "formik": "^2.2.9",
     "framer-motion": "^6.4.3",
-    "html-react-parser": "^3.0.1",
     "humanize-duration": "^3.27.2",
     "next": "12.1.6",
     "next-urql": "^3.3.3",

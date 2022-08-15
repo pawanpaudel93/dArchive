@@ -80,8 +80,10 @@ export default function Archives() {
           skip,
         })
         .toPromise();
-      setSkip(skip + 10);
-      setUrls([...urls, ...response.data.urls]);
+      if (response.data.urls.length > 0) {
+        setSkip(skip + 10);
+        setUrls([...urls, ...response.data.urls]);
+      }
     } catch (e) {
       console.log(e);
     } finally {
@@ -126,6 +128,7 @@ export default function Archives() {
                   value={url}
                   onChange={(e) => {
                     setSkip(0);
+                    setUrls([]);
                     setUrl(e.target.value);
                   }}
                   required

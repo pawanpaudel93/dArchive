@@ -16,6 +16,7 @@ import { Formik, Form, Field, FormikValues, FormikState } from "formik";
 import { useAccount, useContractWrite } from "wagmi";
 import { useState } from "react";
 import { useClient } from "urql";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import { NETWORK_ID } from "@/config";
 import contracts from "@/contracts/hardhat_contracts.json";
@@ -173,15 +174,25 @@ export const Save = () => {
               </Field>
               {isLoading && <Progress size="xs" isIndeterminate />}
               <Center>
-                <Button
-                  mt={4}
-                  colorScheme="blue"
-                  isLoading={props.isSubmitting}
-                  type="submit"
-                  isDisabled={!isConnected}
-                >
-                  Save
-                </Button>
+                {isConnected ? (
+                  <Button
+                    mt={4}
+                    colorScheme="blue"
+                    isLoading={props.isSubmitting}
+                    type="submit"
+                    isDisabled={!isConnected}
+                  >
+                    Save
+                  </Button>
+                ) : (
+                  <div
+                    style={{
+                      marginTop: "15px",
+                    }}
+                  >
+                    <ConnectButton label="Sign in" accountStatus="avatar" />
+                  </div>
+                )}
               </Center>
             </Form>
           )}

@@ -5,14 +5,13 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Image,
   Button,
   VStack,
-  Icon,
+  Img,
+  Center,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import parse from "html-react-parser";
+import { useState } from "react";
 import { saveAs } from "file-saver";
 import { DownloadIcon } from "@chakra-ui/icons";
 
@@ -22,21 +21,6 @@ export default function Archive() {
   const contentURL = `https://ipfs.io/ipfs/${contentID}`;
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  // async function loadAndParse() {
-  //   const response = await fetch(contentURL);
-  //   setContent(await response.text());
-  // }
-
-  // useEffect(() => {
-  //   if (contentID && content === "") {
-  //     loadAndParse();
-  //   }
-  // }, [contentID]);
-
-  // if (!content) {
-  //   return <div>Loading...</div>;
-  // }
 
   function downloadFile(html = true) {
     setIsLoading(true);
@@ -50,7 +34,6 @@ export default function Archive() {
 
   return (
     <div>
-      <base target="_parent" />
       <Tabs>
         <TabList>
           <Tab>Webpage</Tab>
@@ -63,11 +46,11 @@ export default function Archive() {
             <AspectRatio>
               <iframe src={contentURL} />
             </AspectRatio>
-            {/* <div>{parse(content)}</div> */}
-            {/* <html dangerouslySetInnerHTML={{ __html: content }} /> */}
           </TabPanel>
           <TabPanel>
-            <Image src={contentURL + "/screenshot.png"} alt="screenshot" />
+            <Center>
+              <Img src={contentURL + "/screenshot.png"} alt="screenshot" />
+            </Center>
           </TabPanel>
           <TabPanel>
             <VStack spacing={4} mt={4}>
