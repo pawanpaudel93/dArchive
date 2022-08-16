@@ -144,7 +144,7 @@ export const Save = () => {
   };
 
   return (
-    <Container maxW="50%">
+    <Container>
       <Box
         borderWidth="1px"
         borderRadius="lg"
