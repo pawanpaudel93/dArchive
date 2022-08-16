@@ -25,8 +25,13 @@ interface NavItem {
 const NavItems: Array<NavItem> = [
   {
     key: 0,
+    label: "Archive",
+    href: "/archive",
+  },
+  {
+    key: 1,
     label: "Search",
-    href: "/archives",
+    href: "/search",
   },
 ];
 

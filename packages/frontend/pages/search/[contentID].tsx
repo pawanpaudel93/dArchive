@@ -14,7 +14,8 @@ import {
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { saveAs } from "file-saver";
-import { DownloadIcon, ViewIcon } from "@chakra-ui/icons";
+import { DownloadIcon } from "@chakra-ui/icons";
+import { BsArrowsFullscreen } from "react-icons/bs";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 export default function Archive() {
@@ -37,9 +38,9 @@ export default function Archive() {
   return (
     <div>
       <Button position="absolute" right={0} onClick={handle.enter}>
-        <Tooltip label="View FullScreen" aria-label="View FullScreen">
-          <ViewIcon />
-        </Tooltip>
+        {/* <Tooltip label="View FullScreen" aria-label="View FullScreen">
+          <BsArrowsFullscreen />
+        </Tooltip> */}
       </Button>
       <FullScreen handle={handle}>
         <Tabs variant="line">

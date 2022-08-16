@@ -207,7 +207,7 @@ export default function Archives() {
                               <VStack>
                                 <NextLink
                                   href={
-                                    "/archives/" +
+                                    "/search/" +
                                     url.archives[url.archives.length - 1]
                                       .contentID
                                   }
@@ -232,9 +232,7 @@ export default function Archives() {
                                     url.archives.map((archive) => (
                                       <VStack>
                                         <NextLink
-                                          href={
-                                            "/archives/" + archive.contentID
-                                          }
+                                          href={"/search/" + archive.contentID}
                                           passHref
                                         >
                                           <Image
@@ -261,7 +259,7 @@ export default function Archives() {
                                       <VStack>
                                         <NextLink
                                           href={
-                                            "/archives/" +
+                                            "/search/" +
                                             url.archives[0].contentID
                                           }
                                           passHref
@@ -301,7 +299,7 @@ export default function Archives() {
                                       <VStack>
                                         <NextLink
                                           href={
-                                            "/archives/" +
+                                            "/search/" +
                                             url.archives[
                                               url.archives.length - 1
                                             ].contentID
@@ -338,7 +336,7 @@ export default function Archives() {
                                   url.archives.map((archive) => (
                                     <VStack key={archive.id}>
                                       <NextLink
-                                        href={"/archives/" + archive.contentID}
+                                        href={"/search/" + archive.contentID}
                                         passHref
                                       >
                                         <Image

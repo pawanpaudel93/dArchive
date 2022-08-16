@@ -8,7 +8,7 @@ import { chain, createClient, WagmiConfig, configureChains } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import NextNProgress from 'nextjs-progressbar'
-import { NavBar } from "../components/navigation";
+import { Footer, NavBar } from "../components/navigation";
 import "@rainbow-me/rainbowkit/styles.css";
 import {
   getDefaultWallets,
@@ -68,11 +68,11 @@ const App = ({ Component, pageProps }: AppProps) => {
           <NextNProgress />
           <NavBar />
           <div
-            className="py-2 min-h-screen"
-            style={{ marginTop: '70px' }}
+            style={{ marginTop: '70px', minHeight: 'calc(100vh - 70px)' }}
           >
             <Component {...pageProps} />
           </div>
+          <Footer />
         </ChakraProvider>
       </RainbowKitProvider>
     </WagmiConfig>

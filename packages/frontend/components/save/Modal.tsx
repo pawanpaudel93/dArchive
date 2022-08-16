@@ -44,7 +44,7 @@ export const ResaveModal = ({
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Link href={"/archives/" + archive.contentID} isExternal>
+            <Link href={"/search/" + archive.contentID} isExternal>
               View <ExternalLinkIcon mx="2px" />
             </Link>
             <HStack spacing={4}>
