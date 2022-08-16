@@ -46,17 +46,17 @@ export default function Home() {
                 zIndex: -1,
               }}
             >
-              Write once,
+              Archive once,
             </Text>
             <br />
             <Text as={"span"} color={"#0E76FD"}>
-              use everywhere!
+              access anytime forever!
             </Text>
           </Heading>
           <Text color={"gray.500"}>
-            Snippy is a rich coding snippets app that lets you create your own
-            code snippets, categorize them, and even sync them in the cloud so
-            you can use them anywhere. All that is free!
+            dArchive is a decentralized archiving dapp that lets you store any
+            URL content anytime to create a digital archive so you can access it
+            forever.
           </Text>
           <Stack
             spacing={{ base: 4, sm: 6 }}
