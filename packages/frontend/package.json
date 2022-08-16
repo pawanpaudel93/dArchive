@@ -30,6 +30,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-full-screen": "^1.1.1",
+    "react-infinite-scroll-component": "^6.1.0",
     "single-file-cli": "https://github.com/pawanpaudel93/single-file-cli.git",
     "tempy": "^3.0.0",
     "urql": "^2.2.3",

@@ -16,7 +16,10 @@ import {
   Link,
   Image,
   Select,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useClient } from "urql";
 import { FormEvent, useState } from "react";
@@ -60,29 +63,37 @@ interface IUrl {
 
 export default function Archives() {
   const client = useClient();
+  const numberOfArchivesToLoad = 10;
   const [url, setUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [urls, setUrls] = useState<IUrl[]>([]);
   const [selectValue, setSelectValue] = useState("url");
   const [skip, setSkip] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const [searchClicked, setSearchClicked] = useState(false);
   const [isEnabled, setIsEnabled] = useState<{
     [key: string]: boolean;
   }>({});
 
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function fetchData() {
     setIsLoading(true);
+    setHasMore(true);
     try {
       const response = await client
         .query(query.replace("replace_filter", selectValue), {
           url,
-          first: 10,
+          first: numberOfArchivesToLoad,
           skip,
         })
         .toPromise();
       if (response.data.urls.length > 0) {
-        setSkip(skip + 10);
+        setSkip(skip + numberOfArchivesToLoad);
         setUrls([...urls, ...response.data.urls]);
+        if (response.data.urls.length < numberOfArchivesToLoad) {
+          setHasMore(false);
+        }
+      } else {
+        setHasMore(false);
       }
     } catch (e) {
       console.log(e);
@@ -91,10 +102,18 @@ export default function Archives() {
     }
   }
 
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSearchClicked(true);
+    await fetchData();
+  }
+
   return (
     <div>
       <Center>
         <Box
+          position="fixed"
+          top="80px"
           borderWidth="1px"
           boxShadow="lg"
           borderRadius="lg"
@@ -104,6 +123,7 @@ export default function Archives() {
             lg: "50%",
           }}
           p={3}
+          zIndex={1}
         >
           <form onSubmit={onSubmit}>
             <HStack px={2}>
@@ -129,6 +149,8 @@ export default function Archives() {
                   onChange={(e) => {
                     setSkip(0);
                     setUrls([]);
+                    setHasMore(false);
+                    setSearchClicked(false);
                     setUrl(e.target.value);
                   }}
                   required
@@ -156,172 +178,207 @@ export default function Archives() {
                 // md: "80%",
                 // lg: "60%",
               }}
-              mt={4}
+              mt={20}
             >
               <TableContainer>
-                <Table variant="simple">
-                  <Thead>
-                    <Tr>
-                      <Th>Url</Th>
-                      <Th>Archive</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {urls.map((url: IUrl) => (
-                      <Tr key={url.id}>
-                        <Td>
-                          <VStack>
-                            <NextLink
-                              href={
-                                "/archives/" +
-                                url.archives[url.archives.length - 1].contentID
-                              }
-                              passHref
-                            >
-                              <Link color="blue">
-                                {url.archives[url.archives.length - 1].title}
-                              </Link>
-                            </NextLink>
-                            <Link href={url.url}>{url.url}</Link>
-                          </VStack>
-                        </Td>
-                        <Td>
-                          <HStack spacing={2}>
-                            {url.archives.length > 3 ? (
-                              isEnabled[url.id] ? (
-                                url.archives.map((archive) => (
-                                  <VStack>
-                                    <NextLink
-                                      href={"/archives/" + archive.contentID}
-                                      passHref
-                                    >
-                                      <Image
-                                        src={
-                                          "https://ipfs.io/ipfs/" +
-                                          archive.contentID +
-                                          "/screenshot.png"
-                                        }
-                                        style={{
-                                          cursor: "pointer",
-                                        }}
-                                        boxSize="100px"
-                                      />
-                                    </NextLink>
-                                    <small>
-                                      {dayjs(
-                                        parseInt(archive.timestamp) * 1000
-                                      ).format("D MMM YYYY HH:mm")}
-                                    </small>
-                                  </VStack>
-                                ))
-                              ) : (
-                                <>
-                                  <VStack>
-                                    <NextLink
-                                      href={
-                                        "/archives/" + url.archives[0].contentID
-                                      }
-                                      passHref
-                                    >
-                                      <Image
-                                        src={
-                                          "https://ipfs.io/ipfs/" +
-                                          url.archives[0].contentID +
-                                          "/screenshot.png"
-                                        }
-                                        style={{
-                                          cursor: "pointer",
-                                        }}
-                                        boxSize="100px"
-                                      />
-                                    </NextLink>
-                                    <small>
-                                      {dayjs(
-                                        parseInt(url.archives[0].timestamp) *
-                                          1000
-                                      ).format("D MMM YYYY HH:mm")}
-                                    </small>
-                                  </VStack>
-
-                                  <Button
-                                    onClick={() => {
-                                      setIsEnabled({
-                                        ...isEnabled,
-                                        [url.id]: true,
-                                      });
-                                    }}
-                                  >
-                                    View more
-                                  </Button>
-
-                                  <VStack>
-                                    <NextLink
-                                      href={
-                                        "/archives/" +
-                                        url.archives[url.archives.length - 1]
-                                          .contentID
-                                      }
-                                      passHref
-                                    >
-                                      <Image
-                                        src={
-                                          "https://ipfs.io/ipfs/" +
-                                          url.archives[url.archives.length - 1]
-                                            .contentID +
-                                          "/screenshot.png"
-                                        }
-                                        style={{
-                                          cursor: "pointer",
-                                        }}
-                                        boxSize="100px"
-                                      />
-                                    </NextLink>
-                                    <small>
-                                      {dayjs(
-                                        parseInt(
-                                          url.archives[url.archives.length - 1]
-                                            .timestamp
-                                        ) * 1000
-                                      ).format("D MMM YYYY HH:mm")}
-                                    </small>
-                                  </VStack>
-                                </>
-                              )
-                            ) : (
-                              url.archives.map((archive) => (
-                                <VStack key={archive.id}>
-                                  <NextLink
-                                    href={"/archives/" + archive.contentID}
-                                    passHref
-                                  >
-                                    <Image
-                                      src={
-                                        "https://ipfs.io/ipfs/" +
-                                        archive.contentID +
-                                        "/screenshot.png"
-                                      }
-                                      style={{
-                                        cursor: "pointer",
-                                      }}
-                                      boxSize="100px"
-                                    />
-                                  </NextLink>
-                                  <small>
-                                    {dayjs(
-                                      parseInt(archive.timestamp) * 1000
-                                    ).format("D MMM YYYY HH:mm")}
-                                  </small>
-                                </VStack>
-                              ))
-                            )}
-                          </HStack>
-                        </Td>
+                <InfiniteScroll
+                  dataLength={urls.length}
+                  next={fetchData}
+                  hasMore={hasMore}
+                  loader={<h4>Loading more archives...</h4>}
+                  endMessage={
+                    <p style={{ textAlign: "center", marginTop: "5px" }}>
+                      <b>No more archives...</b>
+                    </p>
+                  }
+                >
+                  <Table variant="striped">
+                    <Thead>
+                      <Tr>
+                        <Th>Url</Th>
+                        <Th>Archive</Th>
                       </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
+                    </Thead>
+                    <Tbody>
+                      <>
+                        {urls.map((url: IUrl) => (
+                          <Tr key={url.id}>
+                            <Td>
+                              <VStack>
+                                <NextLink
+                                  href={
+                                    "/archives/" +
+                                    url.archives[url.archives.length - 1]
+                                      .contentID
+                                  }
+                                  passHref
+                                >
+                                  <Link color="blue">
+                                    {
+                                      url.archives[url.archives.length - 1]
+                                        .title
+                                    }
+                                  </Link>
+                                </NextLink>
+                                <Link href={url.url} isExternal>
+                                  {url.url}
+                                </Link>
+                              </VStack>
+                            </Td>
+                            <Td>
+                              <HStack spacing={2}>
+                                {url.archives.length > 3 ? (
+                                  isEnabled[url.id] ? (
+                                    url.archives.map((archive) => (
+                                      <VStack>
+                                        <NextLink
+                                          href={
+                                            "/archives/" + archive.contentID
+                                          }
+                                          passHref
+                                        >
+                                          <Image
+                                            src={
+                                              "https://ipfs.io/ipfs/" +
+                                              archive.contentID +
+                                              "/screenshot.png"
+                                            }
+                                            style={{
+                                              cursor: "pointer",
+                                            }}
+                                            boxSize="100px"
+                                          />
+                                        </NextLink>
+                                        <small>
+                                          {dayjs(
+                                            parseInt(archive.timestamp) * 1000
+                                          ).format("D MMM YYYY HH:mm")}
+                                        </small>
+                                      </VStack>
+                                    ))
+                                  ) : (
+                                    <>
+                                      <VStack>
+                                        <NextLink
+                                          href={
+                                            "/archives/" +
+                                            url.archives[0].contentID
+                                          }
+                                          passHref
+                                        >
+                                          <Image
+                                            src={
+                                              "https://ipfs.io/ipfs/" +
+                                              url.archives[0].contentID +
+                                              "/screenshot.png"
+                                            }
+                                            style={{
+                                              cursor: "pointer",
+                                            }}
+                                            boxSize="100px"
+                                          />
+                                        </NextLink>
+                                        <small>
+                                          {dayjs(
+                                            parseInt(
+                                              url.archives[0].timestamp
+                                            ) * 1000
+                                          ).format("D MMM YYYY HH:mm")}
+                                        </small>
+                                      </VStack>
+
+                                      <Button
+                                        onClick={() => {
+                                          setIsEnabled({
+                                            ...isEnabled,
+                                            [url.id]: true,
+                                          });
+                                        }}
+                                      >
+                                        View more
+                                      </Button>
+
+                                      <VStack>
+                                        <NextLink
+                                          href={
+                                            "/archives/" +
+                                            url.archives[
+                                              url.archives.length - 1
+                                            ].contentID
+                                          }
+                                          passHref
+                                        >
+                                          <Image
+                                            src={
+                                              "https://ipfs.io/ipfs/" +
+                                              url.archives[
+                                                url.archives.length - 1
+                                              ].contentID +
+                                              "/screenshot.png"
+                                            }
+                                            style={{
+                                              cursor: "pointer",
+                                            }}
+                                            boxSize="100px"
+                                          />
+                                        </NextLink>
+                                        <small>
+                                          {dayjs(
+                                            parseInt(
+                                              url.archives[
+                                                url.archives.length - 1
+                                              ].timestamp
+                                            ) * 1000
+                                          ).format("D MMM YYYY HH:mm")}
+                                        </small>
+                                      </VStack>
+                                    </>
+                                  )
+                                ) : (
+                                  url.archives.map((archive) => (
+                                    <VStack key={archive.id}>
+                                      <NextLink
+                                        href={"/archives/" + archive.contentID}
+                                        passHref
+                                      >
+                                        <Image
+                                          src={
+                                            "https://ipfs.io/ipfs/" +
+                                            archive.contentID +
+                                            "/screenshot.png"
+                                          }
+                                          style={{
+                                            cursor: "pointer",
+                                          }}
+                                          boxSize="100px"
+                                        />
+                                      </NextLink>
+                                      <small>
+                                        {dayjs(
+                                          parseInt(archive.timestamp) * 1000
+                                        ).format("D MMM YYYY HH:mm")}
+                                      </small>
+                                    </VStack>
+                                  ))
+                                )}
+                              </HStack>
+                            </Td>
+                          </Tr>
+                        ))}
+                      </>
+                    </Tbody>
+                  </Table>
+                </InfiniteScroll>
               </TableContainer>
             </Box>
+          </Center>
+        )}
+        {urls.length === 0 && url !== "" && searchClicked && !isLoading && (
+          <Center mt={20}>
+            <Alert status="info">
+              <AlertIcon />
+              No archives found
+            </Alert>
           </Center>
         )}
       </Center>
