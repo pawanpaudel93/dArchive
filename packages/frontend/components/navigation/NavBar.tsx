@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import {
   Box,
   Flex,
@@ -12,14 +11,20 @@ import {
   IconButton,
   Heading,
 } from "@chakra-ui/react";
-import NextLink from "next/link";
+import NextLink, { LinkProps } from "next/link";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { HamburgerIcon, CloseIcon, SunIcon, MoonIcon } from "@chakra-ui/icons";
+import { useRouter } from "next/router";
 
 interface NavItem {
   key: number;
   label: string;
   href?: string;
+}
+
+interface NavLinkProps extends LinkProps {
+  children?: string | React.ReactNode;
+  href: string;
 }
 
 const NavItems: Array<NavItem> = [
@@ -48,21 +53,48 @@ const Logo = () => {
   );
 };
 
-const NavLink = ({ children, href }: { children: ReactNode; href: string }) => (
-  <NextLink href={href} passHref>
-    <Link
-      px={2}
-      py={1}
-      rounded={"md"}
-      _hover={{
-        textDecoration: "none",
-        bg: useColorModeValue("gray.200", "gray.700"),
-      }}
-    >
-      {children}
-    </Link>
-  </NextLink>
-);
+const NavLink = ({ href, children }: NavLinkProps) => {
+  const router = useRouter();
+  const isActive = router.pathname === href;
+  const color = useColorModeValue("#0E76FD", "selected");
+
+  if (isActive) {
+    return (
+      <NextLink href={href} passHref>
+        <Link
+          fontWeight="bold"
+          color={color}
+          px={2}
+          py={1}
+          rounded={"md"}
+          _hover={{
+            textDecoration: "none",
+            bg: useColorModeValue("gray.200", "gray.700"),
+          }}
+          border="1px solid"
+        >
+          {children}
+        </Link>
+      </NextLink>
+    );
+  }
+
+  return (
+    <NextLink href={href} passHref>
+      <Link
+        px={2}
+        py={1}
+        rounded={"md"}
+        _hover={{
+          textDecoration: "none",
+          bg: useColorModeValue("gray.200", "gray.700"),
+        }}
+      >
+        {children}
+      </Link>
+    </NextLink>
+  );
+};
 
 export const NavBar = function() {
   const { colorMode, toggleColorMode } = useColorMode();
