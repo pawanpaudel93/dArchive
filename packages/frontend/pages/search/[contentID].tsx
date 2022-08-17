@@ -10,12 +10,15 @@ import {
   Img,
   Center,
   Tooltip,
+  HStack,
+  Divider,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { saveAs } from "file-saver";
 import { DownloadIcon } from "@chakra-ui/icons";
 import { BsArrowsFullscreen } from "react-icons/bs";
+import { SiIpfs } from "react-icons/si";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 export default function Archive() {
@@ -47,7 +50,7 @@ export default function Archive() {
           <TabList>
             <Tab>Webpage</Tab>
             <Tab>Screenshot</Tab>
-            <Tab>Download</Tab>
+            <Tab>Open/Download</Tab>
           </TabList>
 
           <TabPanels>
@@ -63,24 +66,47 @@ export default function Archive() {
             </TabPanel>
             <TabPanel>
               <VStack spacing={4} mt={4}>
-                <Button
-                  leftIcon={<DownloadIcon />}
-                  onClick={() => downloadFile(true)}
-                  isLoading={isLoading}
-                  colorScheme="blue"
-                  loadingText="Downloading..."
-                >
-                  Download Webpage
-                </Button>
-                <Button
-                  leftIcon={<DownloadIcon />}
-                  onClick={() => downloadFile(false)}
-                  isLoading={isLoading}
-                  colorScheme="blue"
-                  loadingText="Downloading..."
-                >
-                  Download Screenshot
-                </Button>
+                <HStack>
+                  <Button
+                    leftIcon={<SiIpfs />}
+                    onClick={() => {
+                      window.open(contentURL, "_blank");
+                    }}
+                    colorScheme="blue"
+                  >
+                    Open Webpage IPFS Link
+                  </Button>
+                  <Button
+                    leftIcon={<DownloadIcon />}
+                    onClick={() => downloadFile(true)}
+                    isLoading={isLoading}
+                    colorScheme="blue"
+                    loadingText="Downloading..."
+                  >
+                    Download Webpage
+                  </Button>
+                </HStack>
+                <Divider />
+                <HStack>
+                  <Button
+                    leftIcon={<SiIpfs />}
+                    onClick={() => {
+                      window.open(contentURL + "/screenshot.png", "_blank");
+                    }}
+                    colorScheme="blue"
+                  >
+                    Open screenshot IPFS Link
+                  </Button>
+                  <Button
+                    leftIcon={<DownloadIcon />}
+                    onClick={() => downloadFile(false)}
+                    isLoading={isLoading}
+                    colorScheme="blue"
+                    loadingText="Downloading..."
+                  >
+                    Download Screenshot
+                  </Button>
+                </HStack>
               </VStack>
             </TabPanel>
           </TabPanels>
