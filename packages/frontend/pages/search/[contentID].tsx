@@ -38,9 +38,9 @@ export default function Archive() {
   return (
     <div>
       <Button position="absolute" right={0} onClick={handle.enter}>
-        {/* <Tooltip label="View FullScreen" aria-label="View FullScreen">
+        <Tooltip label="View FullScreen" aria-label="View FullScreen">
           <BsArrowsFullscreen />
-        </Tooltip> */}
+        </Tooltip>
       </Button>
       <FullScreen handle={handle}>
         <Tabs variant="line">
