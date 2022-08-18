@@ -12,13 +12,10 @@ describe("DArchive", function () {
 
   it("Should add new archive", async function () {
     const contentID = "Qme7ss3ARVgxv6rXqVPiikMJ8u2NLgmgszg13pYrDKEoiu";
-    const contentURL = "https://google.com";
-    const title = "Google";
-    const addTx = await dArchive.addArchive(contentID, contentURL, title);
+
+    const addTx = await dArchive.addArchive(contentID);
     await addTx.wait();
 
-    expect(addTx)
-      .to.emit(dArchive, "ArchiveAdded")
-      .withArgs(contentID, contentURL, title);
+    expect(addTx).to.emit(dArchive, "ArchiveAdded").withArgs(contentID);
   });
 });

@@ -67,7 +67,7 @@ export const Save = () => {
     addressOrName: dArchiveAddress,
     contractInterface: dArchiveABI,
     functionName: "addArchive",
-    args: ["", "", ""],
+    args: [""],
   });
 
   function validateURL(value: string) {
@@ -83,16 +83,23 @@ export const Save = () => {
         },
         body: JSON.stringify({ url }),
       });
-      const { contentID, title } = await response.json();
+      const { contentID } = await response.json();
       console.log("contentID: ", contentID);
       if (contentID) {
         const tx = await writeAsync({
-          recklesslySetUnpreparedArgs: [contentID, url, title],
+          recklesslySetUnpreparedArgs: [contentID],
         });
         await tx?.wait();
         toast({
           title: "Saved successfully",
           status: "success",
+          position: "top-right",
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "Failed to save",
+          status: "error",
           position: "top-right",
           isClosable: true,
         });

@@ -12,6 +12,7 @@ import {
   Tooltip,
   HStack,
   Divider,
+  Spinner,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -27,6 +28,7 @@ export default function Archive() {
   const { contentID } = router.query;
   const contentURL = `https://ipfs.io/ipfs/${contentID}`;
   const [isLoading, setIsLoading] = useState(false);
+  const [iframeLoading, setIframeLoading] = useState(true);
 
   function downloadFile(html = true) {
     setIsLoading(true);
@@ -38,6 +40,10 @@ export default function Archive() {
     setIsLoading(false);
   }
 
+  function onLoad() {
+    setIframeLoading(false);
+  }
+
   return (
     <div>
       <Button position="absolute" right={0} onClick={handle.enter}>
@@ -46,7 +52,7 @@ export default function Archive() {
         </Tooltip>
       </Button>
       <FullScreen handle={handle}>
-        <Tabs variant="line">
+        <Tabs variant="enclosed-colored">
           <TabList>
             <Tab>Webpage</Tab>
             <Tab>Screenshot</Tab>
@@ -55,9 +61,22 @@ export default function Archive() {
 
           <TabPanels>
             <TabPanel>
-              <AspectRatio>
-                <iframe src={contentURL} />
-              </AspectRatio>
+              <div>
+                {iframeLoading && (
+                  <Center>
+                    <Spinner
+                      thickness="4px"
+                      speed="0.65s"
+                      emptyColor="gray.200"
+                      color="blue.500"
+                      size="xl"
+                    />
+                  </Center>
+                )}
+                <AspectRatio>
+                  <iframe src={contentURL} onLoad={onLoad} />
+                </AspectRatio>
+              </div>
             </TabPanel>
             <TabPanel>
               <Center>

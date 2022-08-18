@@ -1,14 +1,16 @@
 specVersion: 0.0.4
 schema:
   file: ./schema.graphql
+features:
+  - ipfsOnEthereumContracts
 dataSources:
   - kind: ethereum
     name: DArchive
     network: mumbai
     source:
-      address: "0xdc66B8EA8e71786c94fDd8B45e2C6CEE20bCC7E1"
+      address: "0x141b789644dF3D4f9408bbF559f2b60e0CB82b2e"
       abi: DArchive
-      startBlock: 27633545
+      startBlock: 27670195
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -19,6 +21,6 @@ dataSources:
         - name: DArchive
           file: ./abis/DArchive.json
       eventHandlers:
-        - event: ArchiveAdded(string,string,string)
+        - event: ArchiveAdded(string)
           handler: handleArchiveAdded
       file: ./src/mapping.ts

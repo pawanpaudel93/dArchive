@@ -10,7 +10,6 @@ type Data = {
   status: string;
   message: string;
   contentID: string;
-  title: string;
 };
 
 const SINGLEFILE_EXECUTABLE = resolve(
@@ -43,9 +42,19 @@ export default async function handler(
           status: "error",
           message: stderr as string,
           contentID: "",
-          title: "",
         });
       }
+      const html = await fsPromises.readFile(
+        resolve(tempDirectory, "index.html")
+      );
+      const parsed = parse(html.toString());
+      const title = parsed.querySelector("title")?.text.trim() ?? "";
+      await fsPromises.writeFile(
+        resolve(tempDirectory, "metadata.json"), JSON.stringify({
+          contentURL: url,
+          title,
+        })
+      )
       const client = new Web3Storage({ token: process.env.WEB3STORAGE_TOKEN });
       const files = await getFilesFromPath(tempDirectory);
       // console.log(files);
@@ -53,18 +62,12 @@ export default async function handler(
         wrapWithDirectory: false,
         maxRetries: 3,
       });
-      const html = await fsPromises.readFile(
-        resolve(tempDirectory, "index.html")
-      );
-      const parsed = parse(html.toString());
-      const title = parsed.querySelector("title")?.text.trim() ?? "";
-      // console.log(title);
       await fsPromises.rm(tempDirectory, { recursive: true, force: true });
       return res.status(200).json({
         status: "success",
         message: "Uploaded to Web3.Storage!",
         contentID: cid,
-        title,
+      
       });
     } catch (error) {
       console.error(error);
@@ -75,7 +78,6 @@ export default async function handler(
         status: "error",
         message: "Error uploading to Web3.Storage!",
         contentID: "",
-        title: "",
       });
     }
   }

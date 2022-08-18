@@ -26,14 +26,6 @@ export class ArchiveAdded__Params {
   get contentID(): string {
     return this._event.parameters[0].value.toString();
   }
-
-  get contentURL(): string {
-    return this._event.parameters[1].value.toString();
-  }
-
-  get title(): string {
-    return this._event.parameters[2].value.toString();
-  }
 }
 
 export class DArchive extends ethereum.SmartContract {
@@ -106,14 +98,6 @@ export class AddArchiveCall__Inputs {
 
   get contentID(): string {
     return this._call.inputValues[0].value.toString();
-  }
-
-  get contentURL(): string {
-    return this._call.inputValues[1].value.toString();
-  }
-
-  get title(): string {
-    return this._call.inputValues[2].value.toString();
   }
 }
 

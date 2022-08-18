@@ -115,7 +115,7 @@
       "chainId": "80001",
       "contracts": {
         "DArchive": {
-          "address": "0xdc66B8EA8e71786c94fDd8B45e2C6CEE20bCC7E1",
+          "address": "0x141b789644dF3D4f9408bbF559f2b60e0CB82b2e",
           "abi": [
             {
               "inputs": [],
@@ -141,18 +141,6 @@
                   "internalType": "string",
                   "name": "contentID",
                   "type": "string"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "string",
-                  "name": "contentURL",
-                  "type": "string"
-                },
-                {
-                  "indexed": false,
-                  "internalType": "string",
-                  "name": "title",
-                  "type": "string"
                 }
               ],
               "name": "ArchiveAdded",
@@ -163,16 +151,6 @@
                 {
                   "internalType": "string",
                   "name": "contentID",
-                  "type": "string"
-                },
-                {
-                  "internalType": "string",
-                  "name": "contentURL",
-                  "type": "string"
-                },
-                {
-                  "internalType": "string",
-                  "name": "title",
                   "type": "string"
                 }
               ],
