@@ -10,7 +10,7 @@ const deployDArchive: DeployFunction = async function ({
   const { deployer } = await getNamedAccounts();
   const isDevelopmentNetwork =
     network.name === "hardhat" || network.name === "localhost";
-  const args: never[] = [];
+  const args = [process.env.TRUSTED_FORWARDER_ADDRESS];
   const DArchive = await deploy("DArchive", {
     args,
     from: deployer,

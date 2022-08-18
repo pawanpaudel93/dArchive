@@ -34,5 +34,8 @@
     "typechain": "^8.1.0",
     "typescript": ">=4.5.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@opengsn/contracts": "^3.0.0-beta.1",
+    "@openzeppelin/contracts": "^4.7.3"
+  }
 }
