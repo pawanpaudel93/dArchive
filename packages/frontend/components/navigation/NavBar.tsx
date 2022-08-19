@@ -38,6 +38,11 @@ const NavItems: Array<NavItem> = [
     label: "Search",
     href: "/search",
   },
+  {
+    key: 2,
+    label: "Support",
+    href: "/support",
+  },
 ];
 
 const Logo = () => {
