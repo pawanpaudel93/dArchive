@@ -14,6 +14,8 @@ import {
   IconProps,
   Icon,
   useToast,
+  InputGroup,
+  InputRightAddon,
 } from "@chakra-ui/react";
 import { NETWORK_ID } from "@/config";
 import { useState, useEffect, FormEvent } from "react";
@@ -218,19 +220,31 @@ export default function Support() {
           <form onSubmit={support}>
             <Box mt={10}>
               <Stack spacing={4}>
-                <Input
-                  placeholder="Amount"
-                  type="number"
-                  value={amount}
-                  min={minAmount}
-                  bg={"gray.100"}
-                  border={0}
-                  color={"gray.500"}
-                  _placeholder={{
-                    color: "gray.500",
-                  }}
-                  onChange={(e) => setAmount(parseFloat(e.target.value))}
-                />
+                <InputGroup>
+                  <Input
+                    placeholder="Amount"
+                    type="number"
+                    value={amount}
+                    min={minAmount}
+                    bg={"gray.100"}
+                    border={0}
+                    color={"gray.500"}
+                    _placeholder={{
+                      color: "gray.500",
+                    }}
+                    onChange={(e) => setAmount(parseFloat(e.target.value))}
+                  />
+                  <InputRightAddon
+                    children="MATIC"
+                    bg={"gray.100"}
+                    border={0}
+                    color={"gray.500"}
+                    _placeholder={{
+                      color: "gray.500",
+                    }}
+                    fontWeight="medium"
+                  />
+                </InputGroup>
               </Stack>
               <Button
                 type="submit"
