@@ -1,7 +1,7 @@
 type Url @entity {
   id: ID!
   url: String!
-  archives: [Archive!]! @derivedFrom(field: "contentURL")
+  archives: [Archive!]! @derivedFrom(field: "urlID")
 }
 
 type Archive @entity {
@@ -9,5 +9,5 @@ type Archive @entity {
   timestamp: BigInt!
   title: String!
   contentID: String!
-  contentURL: Url!
+  urlID: Url!
 }

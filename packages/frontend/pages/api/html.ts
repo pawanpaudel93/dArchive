@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Web3Storage, getFilesFromPath } from "web3.storage";
-import { parse } from "node-html-parser";
 import { temporaryDirectory } from "tempy";
 import { execFile } from "promisify-child-process";
 import { resolve } from "path";
@@ -33,7 +32,7 @@ export default async function handler(
         `--browser-args='${BROWSER_ARGS}'`,
         url,
         `--output=${resolve(tempDirectory, "index.html")}`,
-        `--screenshot-path=${resolve(tempDirectory, "screenshot.png")}`,
+        `--base-path=${tempDirectory}`,
       ];
       const { stderr } = await execFile(SINGLEFILE_EXECUTABLE, command);
       if (stderr) {
@@ -44,17 +43,6 @@ export default async function handler(
           contentID: "",
         });
       }
-      const html = await fsPromises.readFile(
-        resolve(tempDirectory, "index.html")
-      );
-      const parsed = parse(html.toString());
-      const title = parsed.querySelector("title")?.text.trim() ?? "";
-      await fsPromises.writeFile(
-        resolve(tempDirectory, "metadata.json"), JSON.stringify({
-          contentURL: url,
-          title,
-        })
-      )
       const client = new Web3Storage({ token: process.env.WEB3STORAGE_TOKEN });
       const files = await getFilesFromPath(tempDirectory);
       // console.log(files);

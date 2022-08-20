@@ -20,11 +20,15 @@ const deployDArchive: DeployFunction = async function ({
 
   log(`Deployed DArchive at ${DArchive.address}`);
   if (!isDevelopmentNetwork) {
-    log(`Waiting for DArchive to be mined for verification...`);
-    await run("verify:verify", {
-      address: DArchive.address,
-      constructorArguments: args,
-    });
+    try {
+      log(`Waiting for DArchive to be mined for verification...`);
+      await run("verify:verify", {
+        address: DArchive.address,
+        constructorArguments: args,
+      });
+    } catch (e) {
+      log(`DArchive verification failed: ${e}`);
+    }
   }
 };
 

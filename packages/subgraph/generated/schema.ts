@@ -119,12 +119,12 @@ export class Archive extends Entity {
     this.set("contentID", Value.fromString(value));
   }
 
-  get contentURL(): string {
-    let value = this.get("contentURL");
+  get urlID(): string {
+    let value = this.get("urlID");
     return value!.toString();
   }
 
-  set contentURL(value: string) {
-    this.set("contentURL", Value.fromString(value));
+  set urlID(value: string) {
+    this.set("urlID", Value.fromString(value));
   }
 }

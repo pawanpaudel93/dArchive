@@ -8,9 +8,9 @@ dataSources:
     name: DArchive
     network: mumbai
     source:
-      address: "0x0370E44b6B3b4B22BC5deC4053FCb82aD1591BE5"
+      address: "0x20a234376e8329BA5353B3309A61Cdae5178f905"
       abi: DArchive
-      startBlock: 27672913
+      startBlock: 27700113
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
