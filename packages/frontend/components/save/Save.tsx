@@ -20,7 +20,6 @@ import { useAccount, useContractWrite, useProvider } from "wagmi";
 import { useEffect, useState } from "react";
 import { useClient } from "urql";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { Biconomy } from "@biconomy/mexa";
 import NextLink from "next/link";
 
 import { NETWORK_ID } from "@/config";
@@ -31,6 +30,7 @@ import { ExternalProvider } from "@ethersproject/providers";
 import { Contract, ethers } from "ethers";
 import { getErrorMessage } from "@/parser";
 import { serializeError } from "eth-rpc-errors";
+const { Biconomy } = require("@biconomy/mexa");
 
 interface MyFormValues {
   url: string;
@@ -51,12 +51,13 @@ query ($url: String!) {
 }
 `;
 
-let biconomy: Biconomy;
+let biconomy: typeof Biconomy;
 let dArchive: Contract;
 
 export const Save = () => {
   const toast = useToast();
   const client = useClient();
+  const walletProvider = useProvider();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialValues: MyFormValues = { url: "" };
   const chainId = Number(NETWORK_ID);
@@ -107,14 +108,7 @@ export const Save = () => {
         //   recklesslySetUnpreparedArgs: [contentID],
         // });
         // await tx?.wait();
-        // toast({
-        //   title: "Saved successfully",
-        //   status: "success",
-        //   position: "top-right",
-        //   isClosable: true,
-        // });
-        // setIsLoading(false);
-        const provider = biconomy.provider;
+        const provider = await biconomy.getEthersProvider();
         let { data } = await dArchive.populateTransaction.addArchive(
           _contentID
         );
@@ -124,61 +118,16 @@ export const Save = () => {
           from: address,
           signatureType: "EIP712_SIGN",
         };
-        provider.send?.(
-          { method: "eth_sendTransaction", params: [txParams] },
-          (err, tx) => {
-            if (err) {
-              console.log("error: ", err);
-            } else {
-              console.log("tx: ", tx);
-            }
-          }
-        );
-        biconomy.on(
-          "txHashGenerated",
-          (data: { transactionId: string; transactionHash: string }) => {
-            console.log("txHashGenerated:", data);
-          }
-        );
-
-        biconomy.on(
-          "txMined",
-          (data: {
-            msg: string;
-            id: string;
-            hash: string;
-            receipt: string;
-          }) => {
-            setIsLoading(false);
-            toast({
-              title: "Saved successfully",
-              status: "success",
-              position: "top-right",
-              isClosable: true,
-            });
-            console.log("txMined:", data);
-          }
-        );
-
-        biconomy.on(
-          "onError",
-          (data: { error: any; transactionId: string }) => {
-            console.log("onError:", data);
-            toast({
-              title: serializeError(data.error).message,
-              status: "error",
-              position: "top-right",
-              isClosable: true,
-            });
-          }
-        );
-
-        biconomy.on(
-          "txHashChanged",
-          (data: { transactionId: string; transactionHash: string }) => {
-            console.log("txHashChanged:", data);
-          }
-        );
+        const txHash = await provider.send("eth_sendTransaction", [txParams]);
+        await provider.waitForTransaction(txHash);
+        setIsLoading(false);
+        toast({
+          title: "Saved successfully",
+          status: "success",
+          position: "top-right",
+          isClosable: true,
+        });
+        console.log("txMined:", data);
       } else {
         toast({
           title: "Failed to save",
@@ -238,15 +187,12 @@ export const Save = () => {
       biconomy = new Biconomy(window.ethereum as ExternalProvider, {
         apiKey: process.env.NEXT_PUBLIC_BICONOMY_API_KEY!,
         debug: true,
-        contractAddresses: [dArchiveAddress.toLowerCase()],
-        jsonRpcUrl: "https://rpc.ankr.com/polygon_mumbai",
       });
       dArchive = new ethers.Contract(
         dArchiveAddress,
         dArchiveABI,
-        biconomy.ethersProvider
+        new ethers.providers.Web3Provider(biconomy)
       );
-      await biconomy.init();
     }
   }
 
