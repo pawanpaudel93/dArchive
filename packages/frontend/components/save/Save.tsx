@@ -120,7 +120,6 @@ export const Save = () => {
         };
         const txHash = await provider.send("eth_sendTransaction", [txParams]);
         await provider.waitForTransaction(txHash);
-        setIsLoading(false);
         toast({
           title: "Saved successfully",
           status: "success",
@@ -145,6 +144,8 @@ export const Save = () => {
         position: "top-right",
         isClosable: true,
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
