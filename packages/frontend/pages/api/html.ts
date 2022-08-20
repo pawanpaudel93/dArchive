@@ -12,7 +12,7 @@ type Data = {
   contentID: string;
 };
 
-const SINGLEFILE_EXECUTABLE = "node_modules/.bin/single-file"
+const SINGLEFILE_EXECUTABLE = "single-file"
 const BROWSER_PATH = "/usr/bin/google-chrome";
 const BROWSER_ARGS = '["--no-sandbox"]';
 
