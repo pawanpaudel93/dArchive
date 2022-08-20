@@ -30,6 +30,7 @@ export default async function handler(
         url,
         `--output=${resolve(tempDirectory, "index.html")}`,
         `--base-path=${tempDirectory}`,
+        `--localhost=${process.env.AWS_LAMBDA_FUNCTION_VERSION ? false : true}`,
       ];
       const { stderr } = await execFile(SINGLEFILE_EXECUTABLE, command);
       if (stderr) {
