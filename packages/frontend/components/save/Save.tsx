@@ -30,6 +30,7 @@ import { IArchive } from "@/interfaces";
 import { ExternalProvider } from "@ethersproject/providers";
 import { Contract, ethers } from "ethers";
 import { getErrorMessage } from "@/parser";
+import { serializeError } from "eth-rpc-errors";
 
 interface MyFormValues {
   url: string;
@@ -116,7 +117,16 @@ export const Save = () => {
           from: address,
           signatureType: "EIP712_SIGN",
         };
-        await provider?.send("eth_sendTransaction", [txParams]);
+        provider.send?.(
+          { method: "eth_sendTransaction", params: [txParams] },
+          (err, tx) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(tx);
+            }
+          }
+        );
         biconomy.on(
           "txHashGenerated",
           (data: { transactionId: string; transactionHash: string }) => {
@@ -166,7 +176,9 @@ export const Save = () => {
       }
     } catch (error) {
       toast({
-        title: getErrorMessage(error) || "Something went wrong",
+        title: serializeError(error, {
+          fallbackError: { code: 4999, message: getErrorMessage(error) },
+        }).message,
         status: "error",
         position: "top-right",
         isClosable: true,

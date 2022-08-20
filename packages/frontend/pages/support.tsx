@@ -23,6 +23,7 @@ import bioconomyGasTank from "@/contracts/bioconomy_gastank.json";
 import { useContractRead, useContractWrite } from "wagmi";
 import { BigNumber, ethers } from "ethers";
 import { getErrorMessage } from "@/parser";
+import { serializeError } from "eth-rpc-errors";
 
 const avatars = [
   {
@@ -109,7 +110,9 @@ export default function Support() {
       console.log(error);
       toast({
         title: "Error",
-        description: getErrorMessage(error) ?? "Unknown error",
+        description: serializeError(error, {
+          fallbackError: { code: 4999, message: getErrorMessage(error) },
+        }).message,
         status: "error",
         position: "top-right",
         isClosable: true,

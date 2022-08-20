@@ -40,7 +40,7 @@ export default async function handler(
           contentID: "",
         });
       }
-      const client = new Web3Storage({ token: process.env.WEB3STORAGE_TOKEN });
+      const client = new Web3Storage({ token: process.env.WEB3STORAGE_TOKEN!, endpoint: new URL('https://api.web3.storage') });
       const files = await getFilesFromPath(tempDirectory);
       // console.log(files);
       const cid = await client.put(files, {
