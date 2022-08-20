@@ -55,7 +55,6 @@ export default async function handler(
         status: "success",
         message: "Uploaded to Web3.Storage!",
         contentID: cid,
-      
       });
     } catch (error) {
       console.error(error);
