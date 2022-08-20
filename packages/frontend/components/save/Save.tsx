@@ -16,7 +16,7 @@ import {
 import { useToast } from "@chakra-ui/react";
 import isURL from "validator/lib/isURL";
 import { Formik, Form, Field, FormikValues, FormikState } from "formik";
-import { useAccount, useContractWrite } from "wagmi";
+import { useAccount, useContractWrite, useProvider } from "wagmi";
 import { useEffect, useState } from "react";
 import { useClient } from "urql";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
@@ -107,7 +107,14 @@ export const Save = () => {
         //   recklesslySetUnpreparedArgs: [contentID],
         // });
         // await tx?.wait();
-        const provider = await biconomy.provider;
+        // toast({
+        //   title: "Saved successfully",
+        //   status: "success",
+        //   position: "top-right",
+        //   isClosable: true,
+        // });
+        // setIsLoading(false);
+        const provider = biconomy.provider;
         let { data } = await dArchive.populateTransaction.addArchive(
           _contentID
         );
@@ -121,9 +128,9 @@ export const Save = () => {
           { method: "eth_sendTransaction", params: [txParams] },
           (err, tx) => {
             if (err) {
-              console.log(err);
+              console.log("error: ", err);
             } else {
-              console.log(tx);
+              console.log("tx: ", tx);
             }
           }
         );
@@ -143,6 +150,12 @@ export const Save = () => {
             receipt: string;
           }) => {
             setIsLoading(false);
+            toast({
+              title: "Saved successfully",
+              status: "success",
+              position: "top-right",
+              isClosable: true,
+            });
             console.log("txMined:", data);
           }
         );
@@ -151,6 +164,12 @@ export const Save = () => {
           "onError",
           (data: { error: any; transactionId: string }) => {
             console.log("onError:", data);
+            toast({
+              title: serializeError(data.error).message,
+              status: "error",
+              position: "top-right",
+              isClosable: true,
+            });
           }
         );
 
@@ -160,12 +179,6 @@ export const Save = () => {
             console.log("txHashChanged:", data);
           }
         );
-        toast({
-          title: "Saved successfully",
-          status: "success",
-          position: "top-right",
-          isClosable: true,
-        });
       } else {
         toast({
           title: "Failed to save",
@@ -183,8 +196,6 @@ export const Save = () => {
         position: "top-right",
         isClosable: true,
       });
-    } finally {
-      setIsLoading(false);
     }
   }
 
@@ -280,7 +291,7 @@ export const Save = () => {
                   <Button
                     mt={4}
                     colorScheme="blue"
-                    isLoading={props.isSubmitting && isLoading}
+                    isLoading={props.isSubmitting || isLoading}
                     type="submit"
                     isDisabled={!isConnected}
                   >
