@@ -22,7 +22,8 @@ import { BsArrowsFullscreen } from "react-icons/bs";
 import { SiIpfs } from "react-icons/si";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
-export default function Archive() {
+SingleSearch.displayName = "Search";
+export default function SingleSearch() {
   const router = useRouter();
   const handle = useFullScreenHandle();
   const { contentID } = router.query;

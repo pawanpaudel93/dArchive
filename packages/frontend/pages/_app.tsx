@@ -62,7 +62,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
         <NextHead>
-          <title>dArchive</title>
+          <title>dArchive - {Component.displayName}</title>
           <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         </NextHead>
         <ChakraProvider>

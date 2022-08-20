@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
+Home.displayName = "Home";
 export default function Home() {
   const router = useRouter();
 

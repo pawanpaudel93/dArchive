@@ -46,6 +46,7 @@ const avatars = [
   },
 ];
 
+Support.displayName = "Support";
 export default function Support() {
   const toast = useToast();
   const [amount, setAmount] = useState(1);

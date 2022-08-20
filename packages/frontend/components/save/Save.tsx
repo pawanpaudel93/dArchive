@@ -9,19 +9,26 @@ import {
   Progress,
   Box,
   useDisclosure,
+  Alert,
+  AlertIcon,
+  Link,
 } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
 import isURL from "validator/lib/isURL";
 import { Formik, Form, Field, FormikValues, FormikState } from "formik";
 import { useAccount, useContractWrite } from "wagmi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useClient } from "urql";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Biconomy } from "@biconomy/mexa";
+import NextLink from "next/link";
 
 import { NETWORK_ID } from "@/config";
 import contracts from "@/contracts/hardhat_contracts.json";
 import { ResaveModal } from "./Modal";
 import { IArchive } from "@/interfaces";
+import { ExternalProvider } from "@ethersproject/providers";
+import { Contract, ethers } from "ethers";
 
 interface MyFormValues {
   url: string;
@@ -42,14 +49,20 @@ query ($url: String!) {
 }
 `;
 
+let biconomy: Biconomy;
+let dArchive: Contract;
+
 export const Save = () => {
   const toast = useToast();
   const client = useClient();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialValues: MyFormValues = { url: "" };
   const chainId = Number(NETWORK_ID);
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const [isLoading, setIsLoading] = useState(false);
+  const [isArchived, setIsArchived] = useState(false);
+  const [contentID, setContentID] = useState("");
+  const [balance, setBalance] = useState(0);
   const [archive, setArchive] = useState<IArchive>({
     id: "",
     title: "",
@@ -83,13 +96,59 @@ export const Save = () => {
         },
         body: JSON.stringify({ url }),
       });
-      const { contentID } = await response.json();
-      console.log("contentID: ", contentID);
-      if (contentID) {
-        const tx = await writeAsync({
-          recklesslySetUnpreparedArgs: [contentID],
-        });
-        await tx?.wait();
+      const responseJSON = await response.json();
+      const _contentID = responseJSON.contentID;
+      setContentID(_contentID);
+      console.log("contentID: ", _contentID);
+      if (_contentID) {
+        // const tx = await writeAsync({
+        //   recklesslySetUnpreparedArgs: [contentID],
+        // });
+        // await tx?.wait();
+        const provider = await biconomy.provider;
+        let { data } = await dArchive.populateTransaction.addArchive(
+          _contentID
+        );
+        let txParams = {
+          data: data,
+          to: dArchiveAddress,
+          from: address,
+          signatureType: "EIP712_SIGN",
+        };
+        await provider?.send("eth_sendTransaction", [txParams]);
+        biconomy.on(
+          "txHashGenerated",
+          (data: { transactionId: string; transactionHash: string }) => {
+            console.log("txHashGenerated:", data);
+          }
+        );
+
+        biconomy.on(
+          "txMined",
+          (data: {
+            msg: string;
+            id: string;
+            hash: string;
+            receipt: string;
+          }) => {
+            setIsLoading(false);
+            console.log("txMined:", data);
+          }
+        );
+
+        biconomy.on(
+          "onError",
+          (data: { error: any; transactionId: string }) => {
+            console.log("onError:", data);
+          }
+        );
+
+        biconomy.on(
+          "txHashChanged",
+          (data: { transactionId: string; transactionHash: string }) => {
+            console.log("txHashChanged:", data);
+          }
+        );
         toast({
           title: "Saved successfully",
           status: "success",
@@ -112,6 +171,8 @@ export const Save = () => {
         position: "top-right",
         isClosable: true,
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -146,9 +207,29 @@ export const Save = () => {
       console.log(e);
     } finally {
       actions.setSubmitting(false);
-      setIsLoading(false);
     }
   };
+
+  async function biconomyInit() {
+    if (!biconomy) {
+      biconomy = new Biconomy(window.ethereum as ExternalProvider, {
+        apiKey: process.env.NEXT_PUBLIC_BICONOMY_API_KEY!,
+        debug: true,
+        contractAddresses: [dArchiveAddress.toLowerCase()],
+        jsonRpcUrl: "https://rpc.ankr.com/polygon_mumbai",
+      });
+      dArchive = new ethers.Contract(
+        dArchiveAddress,
+        dArchiveABI,
+        biconomy.ethersProvider
+      );
+      await biconomy.init();
+    }
+  }
+
+  useEffect(() => {
+    biconomyInit();
+  }, [isConnected]);
 
   return (
     <Container>
@@ -187,7 +268,7 @@ export const Save = () => {
                   <Button
                     mt={4}
                     colorScheme="blue"
-                    isLoading={props.isSubmitting}
+                    isLoading={props.isSubmitting && isLoading}
                     type="submit"
                     isDisabled={!isConnected}
                   >
@@ -207,6 +288,16 @@ export const Save = () => {
           )}
         </Formik>
       </Box>
+
+      {!isLoading && contentID && (
+        <Alert status="info">
+          <AlertIcon />
+          <NextLink href={"/search/" + contentID}>
+            <Link>See archived result</Link>
+          </NextLink>
+        </Alert>
+      )}
+
       {isOpen && (
         <ResaveModal
           onOpen={onOpen}

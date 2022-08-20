@@ -17,7 +17,7 @@ const Logo = () => {
       height={32}
       viewBox="0 0 28 28"
       xmlns="http://www.w3.org/2000/svg"
-      style={{ display: "inline", color: "blue" }}
+      style={{ display: "inline", color: "#0E76FD" }}
     >
       <image xlinkHref="/logo.svg" height="28" />
     </svg>

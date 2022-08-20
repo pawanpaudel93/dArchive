@@ -61,7 +61,8 @@ interface IUrl {
   archives: IArchives[];
 }
 
-export default function Archives() {
+Search.displayName = "Search";
+export default function Search() {
   const client = useClient();
   const numberOfArchivesToLoad = 10;
   const [url, setUrl] = useState("");
