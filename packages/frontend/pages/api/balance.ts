@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { URL } from "url";
 import fetch from "node-fetch";
+import { getErrorMessage } from "@/parser";
 
 type Data = {
   status: string;
@@ -45,7 +46,7 @@ export default async function handler(
     console.log(error);
     return res.status(500).json({
       status: "error",
-      message: "Error retrieving balance",
+      message: getErrorMessage(error),
       balance: 0,
     });
   }

@@ -22,6 +22,7 @@ import { useState, useEffect, FormEvent } from "react";
 import bioconomyGasTank from "@/contracts/bioconomy_gastank.json";
 import { useContractRead, useContractWrite } from "wagmi";
 import { BigNumber, ethers } from "ethers";
+import { getErrorMessage } from "@/parser";
 
 const avatars = [
   {
@@ -108,7 +109,7 @@ export default function Support() {
       console.log(error);
       toast({
         title: "Error",
-        description: error?.message ?? "Unknown error",
+        description: getErrorMessage(error) ?? "Unknown error",
         status: "error",
         position: "top-right",
         isClosable: true,

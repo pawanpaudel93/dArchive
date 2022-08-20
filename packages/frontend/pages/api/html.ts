@@ -4,6 +4,7 @@ import { temporaryDirectory } from "tempy";
 import { execFile } from "promisify-child-process";
 import { resolve } from "path";
 import fsPromises from "node:fs/promises";
+import { getErrorMessage } from "@/parser";
 
 type Data = {
   status: string;
@@ -59,7 +60,7 @@ export default async function handler(
       }
       return res.status(500).json({
         status: "error",
-        message: "Error uploading to Web3.Storage!",
+        message: getErrorMessage(error),
         contentID: "",
       });
     }

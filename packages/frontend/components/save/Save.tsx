@@ -29,6 +29,7 @@ import { ResaveModal } from "./Modal";
 import { IArchive } from "@/interfaces";
 import { ExternalProvider } from "@ethersproject/providers";
 import { Contract, ethers } from "ethers";
+import { getErrorMessage } from "@/parser";
 
 interface MyFormValues {
   url: string;
@@ -164,9 +165,8 @@ export const Save = () => {
         });
       }
     } catch (error) {
-      console.log(error);
       toast({
-        title: error?.message || "Something went wrong",
+        title: getErrorMessage(error) || "Something went wrong",
         status: "error",
         position: "top-right",
         isClosable: true,
@@ -204,7 +204,7 @@ export const Save = () => {
         await save(url);
       }
     } catch (e) {
-      console.log(e);
+      console.log(getErrorMessage(e));
     } finally {
       actions.setSubmitting(false);
     }

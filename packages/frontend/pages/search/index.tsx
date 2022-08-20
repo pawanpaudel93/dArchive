@@ -25,6 +25,7 @@ import { useClient } from "urql";
 import { FormEvent, useState } from "react";
 import NextLink from "next/link";
 import dayjs from "dayjs";
+import { getErrorMessage } from "@/parser";
 
 const query = `
   query ($url: String!, $first: Int!, $skip: Int!) {
@@ -97,7 +98,7 @@ export default function Search() {
         setHasMore(false);
       }
     } catch (e) {
-      console.log(e);
+      console.log(getErrorMessage(e));
     } finally {
       setIsLoading(false);
     }
