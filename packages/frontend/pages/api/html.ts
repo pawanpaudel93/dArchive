@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Web3Storage, getFilesFromPath } from "web3.storage";
-import { parse } from "node-html-parser";
 import { temporaryDirectory } from "tempy";
 import { execFile } from "promisify-child-process";
 import { resolve } from "path";
 import fsPromises from "node:fs/promises";
+import { getErrorMessage } from "@/parser";
 
 type Data = {
   status: string;
@@ -12,11 +12,7 @@ type Data = {
   contentID: string;
 };
 
-const SINGLEFILE_EXECUTABLE = resolve(
-  "..",
-  "..",
-  "node_modules/single-file-cli/single-file"
-);
+const SINGLEFILE_EXECUTABLE = "node_modules/.bin/single-file"
 const BROWSER_PATH = "/usr/bin/google-chrome";
 const BROWSER_ARGS = '["--no-sandbox"]';
 
@@ -33,7 +29,7 @@ export default async function handler(
         `--browser-args='${BROWSER_ARGS}'`,
         url,
         `--output=${resolve(tempDirectory, "index.html")}`,
-        `--screenshot-path=${resolve(tempDirectory, "screenshot.png")}`,
+        `--base-path=${tempDirectory}`,
       ];
       const { stderr } = await execFile(SINGLEFILE_EXECUTABLE, command);
       if (stderr) {
@@ -44,18 +40,7 @@ export default async function handler(
           contentID: "",
         });
       }
-      const html = await fsPromises.readFile(
-        resolve(tempDirectory, "index.html")
-      );
-      const parsed = parse(html.toString());
-      const title = parsed.querySelector("title")?.text.trim() ?? "";
-      await fsPromises.writeFile(
-        resolve(tempDirectory, "metadata.json"), JSON.stringify({
-          contentURL: url,
-          title,
-        })
-      )
-      const client = new Web3Storage({ token: process.env.WEB3STORAGE_TOKEN });
+      const client = new Web3Storage({ token: process.env.WEB3STORAGE_TOKEN!, endpoint: new URL('https://api.web3.storage') });
       const files = await getFilesFromPath(tempDirectory);
       // console.log(files);
       const cid = await client.put(files, {
@@ -67,7 +52,6 @@ export default async function handler(
         status: "success",
         message: "Uploaded to Web3.Storage!",
         contentID: cid,
-      
       });
     } catch (error) {
       console.error(error);
@@ -76,7 +60,7 @@ export default async function handler(
       }
       return res.status(500).json({
         status: "error",
-        message: "Error uploading to Web3.Storage!",
+        message: getErrorMessage(error),
         contentID: "",
       });
     }

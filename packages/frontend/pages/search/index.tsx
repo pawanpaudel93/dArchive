@@ -25,6 +25,7 @@ import { useClient } from "urql";
 import { FormEvent, useState } from "react";
 import NextLink from "next/link";
 import dayjs from "dayjs";
+import { getErrorMessage } from "@/parser";
 
 const query = `
   query ($url: String!, $first: Int!, $skip: Int!) {
@@ -61,7 +62,8 @@ interface IUrl {
   archives: IArchives[];
 }
 
-export default function Archives() {
+Search.displayName = "Search";
+export default function Search() {
   const client = useClient();
   const numberOfArchivesToLoad = 10;
   const [url, setUrl] = useState("");
@@ -96,7 +98,7 @@ export default function Archives() {
         setHasMore(false);
       }
     } catch (e) {
-      console.log(e);
+      console.log(getErrorMessage(e));
     } finally {
       setIsLoading(false);
     }

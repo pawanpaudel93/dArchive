@@ -16,7 +16,7 @@ import {
   Chain,
 } from "@rainbow-me/rainbowkit";
 import { useIsMounted } from "../hooks";
-import { cacheExchange, dedupExchange, fetchExchange } from "urql";
+import { dedupExchange, fetchExchange } from "urql";
 
 // Get environment variables
 const alchemyId = process.env.NEXT_PUBLIC_ALCHEMY_ID as string;
@@ -62,7 +62,8 @@ const App = ({ Component, pageProps }: AppProps) => {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
         <NextHead>
-          <title>dArchive</title>
+          <title>dArchive - {Component.displayName}</title>
+          <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         </NextHead>
         <ChakraProvider>
           <NextNProgress />
@@ -81,5 +82,5 @@ const App = ({ Component, pageProps }: AppProps) => {
 
 export default withUrqlClient((ssrExchange) => ({
   url: "https://api.thegraph.com/subgraphs/name/pawanpaudel93/darchive",
-  exchanges: [ssrExchange, dedupExchange, cacheExchange, fetchExchange],
+  exchanges: [ssrExchange, dedupExchange, fetchExchange],
 }))(App);

@@ -6,7 +6,7 @@ export function handleArchiveAdded(event: ArchiveAddedEvent): void {
   let metadata = ipfs.cat(event.params.contentID + "/metadata.json");
   if (metadata) {
     const metadataJson = json.fromBytes(metadata).toObject();
-    const contentURL = metadataJson.get("contentURL");
+    const contentURL = metadataJson.get("url");
     if (contentURL) {
       let urlID = crypto
         .keccak256(ByteArray.fromUTF8(contentURL.toString()))
@@ -33,7 +33,7 @@ export function handleArchiveAdded(event: ArchiveAddedEvent): void {
         }
         archive.timestamp = event.block.timestamp;
         archive.contentID = event.params.contentID;
-        archive.contentURL = urlID;
+        archive.urlID = urlID;
         archive.save();
       }
     }

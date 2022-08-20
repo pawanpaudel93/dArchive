@@ -10,7 +10,7 @@ const deployDArchive: DeployFunction = async function ({
   const { deployer } = await getNamedAccounts();
   const isDevelopmentNetwork =
     network.name === "hardhat" || network.name === "localhost";
-  const args: never[] = [];
+  const args = [process.env.TRUSTED_FORWARDER_ADDRESS];
   const DArchive = await deploy("DArchive", {
     args,
     from: deployer,
@@ -20,11 +20,15 @@ const deployDArchive: DeployFunction = async function ({
 
   log(`Deployed DArchive at ${DArchive.address}`);
   if (!isDevelopmentNetwork) {
-    log(`Waiting for DArchive to be mined for verification...`);
-    await run("verify:verify", {
-      address: DArchive.address,
-      constructorArguments: args,
-    });
+    try {
+      log(`Waiting for DArchive to be mined for verification...`);
+      await run("verify:verify", {
+        address: DArchive.address,
+        constructorArguments: args,
+      });
+    } catch (e) {
+      log(`DArchive verification failed: ${e}`);
+    }
   }
 };
 

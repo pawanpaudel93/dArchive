@@ -1,5 +1,6 @@
 import { Save } from "@/components/save";
 
+Archive.displayName = "Archive";
 export default function Archive() {
   return (
     <div

@@ -38,17 +38,27 @@ const NavItems: Array<NavItem> = [
     label: "Search",
     href: "/search",
   },
+  {
+    key: 2,
+    label: "Support",
+    href: "/support",
+  },
+  {
+    key: 3,
+    label: "FAQ",
+    href: "/faq",
+  },
 ];
 
 const Logo = () => {
   return (
     <svg
       height={32}
-      viewBox="0 0 35 28"
+      viewBox="0 0 28 28"
       xmlns="http://www.w3.org/2000/svg"
-      style={{ display: "inline" }}
+      style={{ display: "inline", color: "blue" }}
     >
-      <image xlinkHref="/logo.png" height="32" />
+      <image xlinkHref="/logo.svg" height="28" />
     </svg>
   );
 };
@@ -114,8 +124,10 @@ export const NavBar = function() {
             <HStack spacing={8} alignItems={"center"}>
               <NextLink href="/" passHref>
                 <Box cursor="pointer" p={2}>
-                  {/* <Logo /> */}
-                  <Heading size="md">dArchive</Heading>
+                  <HStack>
+                    <Logo />
+                    <Heading size="md">dArchive</Heading>
+                  </HStack>
                 </Box>
               </NextLink>
 
