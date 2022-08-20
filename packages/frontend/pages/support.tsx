@@ -27,24 +27,24 @@ import { serializeError } from "eth-rpc-errors";
 
 const avatars = [
   {
-    name: "Ryan Florence",
-    url: "https://bit.ly/ryan-florence",
+    name: "0",
+    url: "https://avatars.dicebear.com/api/avataaars/02.svg",
   },
   {
-    name: "Segun Adebayo",
-    url: "https://bit.ly/sage-adebayo",
+    name: "1",
+    url: "https://avatars.dicebear.com/api/avataaars/10.svg",
   },
   {
-    name: "Kent Dodds",
-    url: "https://bit.ly/kent-c-dodds",
+    name: "2",
+    url: "https://avatars.dicebear.com/api/avataaars/22.svg",
   },
   {
-    name: "Prosper Otemuyiwa",
-    url: "https://bit.ly/prosper-baba",
+    name: "3",
+    url: "https://avatars.dicebear.com/api/avataaars/32.svg",
   },
   {
-    name: "Christian Nwamba",
-    url: "https://bit.ly/code-beast",
+    name: "4",
+    url: "https://avatars.dicebear.com/api/avataaars/42.svg",
   },
 ];
 
