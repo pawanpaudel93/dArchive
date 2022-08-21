@@ -14,10 +14,10 @@ import {
   VStack,
   Divider,
   HStack,
-  Container,
 } from "@chakra-ui/react";
 import { BsGithub, BsTwitter } from "react-icons/bs";
 
+About.displayName = "About";
 export default function About() {
   const pulseRing = keyframes`
 	0% {
