@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Web3Storage, getFilesFromPath } from "web3.storage";
+import { Web3Storage, getFilesFromPath, Filelike } from "web3.storage";
 import { temporaryDirectory } from "tempy";
 import { execFile } from "promisify-child-process";
 import { resolve } from "path";
@@ -44,7 +44,7 @@ export default async function handler(
       const client = new Web3Storage({ token: process.env.WEB3STORAGE_TOKEN!, endpoint: new URL('https://api.web3.storage') });
       const files = await getFilesFromPath(tempDirectory);
       // console.log(files);
-      const cid = await client.put(files, {
+      const cid = await client.put(files as Iterable<Filelike>, {
         wrapWithDirectory: false,
         maxRetries: 3,
       });
