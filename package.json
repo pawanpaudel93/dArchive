@@ -14,7 +14,8 @@
     "test": "yarn workspace backend test",
     "clean": "yarn workspace backend clean",
     "deploy": "yarn workspace backend deploy",
-    "heroku:deploy": "git subtree push --prefix packages/frontend heroku main"
+    "heroku:deploy": "git subtree push --prefix packages/frontend heroku main",
+    "heroku:deploy-api": "git subtree push --prefix packages/api heroku main"
   },
   "workspaces": {
     "packages": [
