@@ -89,16 +89,18 @@ export const Save = () => {
   function validateURL(value: string) {
     return isURL(value) ? undefined : "Invalid URL";
   }
-
   async function save(url: string) {
     try {
-      const response = await fetch("/api/html", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ url }),
-      });
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_EXTERNAL_API ?? "/api/html",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ url }),
+        }
+      );
       const responseJSON = await response.json();
       const _contentID = responseJSON.contentID;
       setContentID(_contentID);
