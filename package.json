@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "yarn workspace frontend dev",
     "build": "yarn workspace frontend build",
+    "export": "yarn workspace frontend export",
     "start": "yarn workspace frontend start",
     "lint": "yarn workspace frontend lint",
     "chain": "yarn workspace backend chain",

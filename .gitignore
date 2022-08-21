@@ -29,6 +29,7 @@ artifacts
 
 /packages/frontend/node_modules
 packages/frontend/.next/
+packages/frontend/out
 /out/
 
 # subgraph
