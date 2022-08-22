@@ -32,6 +32,7 @@ router.post('/', async (req, res) => {
         status: 'error',
         message: stderr,
         contentID: '',
+        title: '',
       });
     }
     const client = new Web3Storage({ token: process.env.WEB3STORAGE_TOKEN, endpoint: new URL('https://api.web3.storage') });
@@ -41,11 +42,14 @@ router.post('/', async (req, res) => {
       wrapWithDirectory: false,
       maxRetries: 3,
     });
+    const data = await (await fsPromises.readFile(resolve(tempDirectory, 'metadata.json'))).toString();
+    const { title } = JSON.parse(data);
     await fsPromises.rm(tempDirectory, { recursive: true, force: true });
     return res.status(200).json({
       status: 'success',
       message: 'Uploaded to Web3.Storage!',
       contentID: cid,
+      title,
     });
   } catch (error) {
     console.error(error);
@@ -56,6 +60,7 @@ router.post('/', async (req, res) => {
       status: 'error',
       message: error.message,
       contentID: '',
+      title: '',
     });
   }
 });

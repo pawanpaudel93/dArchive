@@ -17,7 +17,7 @@ interface ISupporterNFT {
 }
 
 contract DArchive is ERC2771Recipient, Ownable {
-    event ArchiveAdded(string contentID);
+    event ArchiveAdded(string contentID, string contentURL, string title);
     error AlreadyArchived(string contentID);
 
     mapping(string => bool) public archiveAdded;
@@ -28,12 +28,16 @@ contract DArchive is ERC2771Recipient, Ownable {
         supporterNFT = ISupporterNFT(supporterNFTAddress);
     }
 
-    function addArchive(string calldata contentID) public {
+    function addArchive(
+        string calldata contentID,
+        string calldata contentURL,
+        string calldata title
+    ) public {
         if (archiveAdded[contentID]) {
             revert AlreadyArchived(contentID);
         }
         archiveAdded[contentID] = true;
-        emit ArchiveAdded(contentID);
+        emit ArchiveAdded(contentID, contentURL, title);
     }
 
     function setTrustedForwarder(address _trustedForwarder) public onlyOwner {

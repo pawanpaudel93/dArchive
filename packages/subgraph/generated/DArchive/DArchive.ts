@@ -26,6 +26,14 @@ export class ArchiveAdded__Params {
   get contentID(): string {
     return this._event.parameters[0].value.toString();
   }
+
+  get contentURL(): string {
+    return this._event.parameters[1].value.toString();
+  }
+
+  get title(): string {
+    return this._event.parameters[2].value.toString();
+  }
 }
 
 export class OwnershipTransferred extends ethereum.Event {
@@ -135,6 +143,21 @@ export class DArchive extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
+  supporterNFT(): Address {
+    let result = super.call("supporterNFT", "supporterNFT():(address)", []);
+
+    return result[0].toAddress();
+  }
+
+  try_supporterNFT(): ethereum.CallResult<Address> {
+    let result = super.tryCall("supporterNFT", "supporterNFT():(address)", []);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
   versionRecipient(): string {
     let result = super.call(
       "versionRecipient",
@@ -179,6 +202,10 @@ export class ConstructorCall__Inputs {
   get _trustedForwarder(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
+
+  get supporterNFTAddress(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
 }
 
 export class ConstructorCall__Outputs {
@@ -208,6 +235,14 @@ export class AddArchiveCall__Inputs {
 
   get contentID(): string {
     return this._call.inputValues[0].value.toString();
+  }
+
+  get contentURL(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+
+  get title(): string {
+    return this._call.inputValues[2].value.toString();
   }
 }
 
@@ -245,6 +280,66 @@ export class RenounceOwnershipCall__Outputs {
   }
 }
 
+export class RevokeCall extends ethereum.Call {
+  get inputs(): RevokeCall__Inputs {
+    return new RevokeCall__Inputs(this);
+  }
+
+  get outputs(): RevokeCall__Outputs {
+    return new RevokeCall__Outputs(this);
+  }
+}
+
+export class RevokeCall__Inputs {
+  _call: RevokeCall;
+
+  constructor(call: RevokeCall) {
+    this._call = call;
+  }
+
+  get tokenId(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class RevokeCall__Outputs {
+  _call: RevokeCall;
+
+  constructor(call: RevokeCall) {
+    this._call = call;
+  }
+}
+
+export class SetSupporterTokenURICall extends ethereum.Call {
+  get inputs(): SetSupporterTokenURICall__Inputs {
+    return new SetSupporterTokenURICall__Inputs(this);
+  }
+
+  get outputs(): SetSupporterTokenURICall__Outputs {
+    return new SetSupporterTokenURICall__Outputs(this);
+  }
+}
+
+export class SetSupporterTokenURICall__Inputs {
+  _call: SetSupporterTokenURICall;
+
+  constructor(call: SetSupporterTokenURICall) {
+    this._call = call;
+  }
+
+  get uri(): string {
+    return this._call.inputValues[0].value.toString();
+  }
+}
+
+export class SetSupporterTokenURICall__Outputs {
+  _call: SetSupporterTokenURICall;
+
+  constructor(call: SetSupporterTokenURICall) {
+    this._call = call;
+  }
+}
+
 export class SetTrustedForwarderCall extends ethereum.Call {
   get inputs(): SetTrustedForwarderCall__Inputs {
     return new SetTrustedForwarderCall__Inputs(this);
@@ -275,6 +370,32 @@ export class SetTrustedForwarderCall__Outputs {
   }
 }
 
+export class SupportCall extends ethereum.Call {
+  get inputs(): SupportCall__Inputs {
+    return new SupportCall__Inputs(this);
+  }
+
+  get outputs(): SupportCall__Outputs {
+    return new SupportCall__Outputs(this);
+  }
+}
+
+export class SupportCall__Inputs {
+  _call: SupportCall;
+
+  constructor(call: SupportCall) {
+    this._call = call;
+  }
+}
+
+export class SupportCall__Outputs {
+  _call: SupportCall;
+
+  constructor(call: SupportCall) {
+    this._call = call;
+  }
+}
+
 export class TransferOwnershipCall extends ethereum.Call {
   get inputs(): TransferOwnershipCall__Inputs {
     return new TransferOwnershipCall__Inputs(this);
@@ -301,6 +422,36 @@ export class TransferOwnershipCall__Outputs {
   _call: TransferOwnershipCall;
 
   constructor(call: TransferOwnershipCall) {
+    this._call = call;
+  }
+}
+
+export class WithdrawCall extends ethereum.Call {
+  get inputs(): WithdrawCall__Inputs {
+    return new WithdrawCall__Inputs(this);
+  }
+
+  get outputs(): WithdrawCall__Outputs {
+    return new WithdrawCall__Outputs(this);
+  }
+}
+
+export class WithdrawCall__Inputs {
+  _call: WithdrawCall;
+
+  constructor(call: WithdrawCall) {
+    this._call = call;
+  }
+
+  get amount(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+}
+
+export class WithdrawCall__Outputs {
+  _call: WithdrawCall;
+
+  constructor(call: WithdrawCall) {
     this._call = call;
   }
 }

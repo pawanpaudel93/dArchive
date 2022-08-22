@@ -80,7 +80,7 @@ export const Save = () => {
     addressOrName: dArchiveAddress,
     contractInterface: dArchiveABI,
     functionName: "addArchive",
-    args: [""],
+    args: ["", "", ""],
   });
 
   function validateURL(value: string) {
@@ -100,19 +100,22 @@ export const Save = () => {
       );
       const responseJSON = await response.json();
       const _contentID = responseJSON.contentID;
+      const title = responseJSON.title;
       setContentID(_contentID);
       console.log("contentID: ", _contentID);
       if (_contentID) {
         const { balance } = await (await fetch("/api/balance")).json();
         if (balance < 0.1) {
           const tx = await writeAsync({
-            recklesslySetUnpreparedArgs: [contentID],
+            recklesslySetUnpreparedArgs: [contentID, url, title],
           });
           await tx?.wait();
         } else {
           const provider = await biconomy.getEthersProvider();
           let { data } = await dArchive.populateTransaction.addArchive(
-            _contentID
+            _contentID,
+            url,
+            title
           );
           let txParams = {
             data: data,

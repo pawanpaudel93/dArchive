@@ -10,6 +10,7 @@ type Data = {
   status: string;
   message: string;
   contentID: string;
+  title: string;
 };
 
 const SINGLEFILE_EXECUTABLE = "single-file"
@@ -39,6 +40,7 @@ export default async function handler(
           status: "error",
           message: stderr as string,
           contentID: "",
+          title: "",
         });
       }
       const client = new Web3Storage({ token: process.env.WEB3STORAGE_TOKEN!, endpoint: new URL('https://api.web3.storage') });
@@ -48,11 +50,14 @@ export default async function handler(
         wrapWithDirectory: false,
         maxRetries: 3,
       });
+      const data = await (await fsPromises.readFile(resolve(tempDirectory, "metadata.json"))).toString();
+      const {title} = JSON.parse(data);
       await fsPromises.rm(tempDirectory, { recursive: true, force: true });
       return res.status(200).json({
         status: "success",
         message: "Uploaded to Web3.Storage!",
         contentID: cid,
+        title,
       });
     } catch (error) {
       console.error(error);
@@ -63,6 +68,7 @@ export default async function handler(
         status: "error",
         message: getErrorMessage(error),
         contentID: "",
+        title: "",
       });
     }
   }

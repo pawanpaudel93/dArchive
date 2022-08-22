@@ -34,6 +34,18 @@
         "internalType": "string",
         "name": "contentID",
         "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "contentURL",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "title",
+        "type": "string"
       }
     ],
     "name": "ArchiveAdded",
@@ -63,6 +75,16 @@
       {
         "internalType": "string",
         "name": "contentID",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "contentURL",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "title",
         "type": "string"
       }
     ],

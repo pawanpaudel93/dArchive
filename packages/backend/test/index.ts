@@ -12,11 +12,14 @@ describe("DArchive", function () {
 
   it("Should add new archive", async function () {
     const contentID = "Qme7ss3ARVgxv6rXqVPiikMJ8u2NLgmgszg13pYrDKEoiu";
-
-    const addTx = await dArchive.addArchive(contentID);
+    const contentURL = "https://polygon.technology/";
+    const title = "Polygon";
+    const addTx = await dArchive.addArchive(contentID, contentURL, title);
     await addTx.wait();
 
-    expect(addTx).to.emit(dArchive, "ArchiveAdded").withArgs(contentID);
+    expect(addTx)
+      .to.emit(dArchive, "ArchiveAdded")
+      .withArgs(contentID, title, contentURL);
   });
 
   it("Should mint a new soulbound nft for supporter", async function () {
