@@ -77,9 +77,17 @@ contract DArchive is ERC2771Recipient, Ownable {
         }
     }
 
-    receive() external payable {
-        if (supporterNFT.balanceOf(msg.sender) == 0) {
-            supporterNFT.safeMint(msg.sender);
+    function _mint(address to) internal {
+        if (supporterNFT.balanceOf(to) == 0) {
+            supporterNFT.safeMint(to);
         }
+    }
+
+    function support() external payable {
+        _mint(msg.sender);
+    }
+
+    receive() external payable {
+        _mint(msg.sender);
     }
 }

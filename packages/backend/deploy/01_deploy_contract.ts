@@ -19,7 +19,7 @@ const deployDArchive: DeployFunction = async function ({
     waitConfirmations: isDevelopmentNetwork ? 0 : 6,
   });
   const tx = await supporterNFT.setSupporterTokenURI(
-    "bafybeiepwtz3futfjbnakqnu2qtgmtp2gsxjop34zyagrto5yeo6woojoe"
+    "bafybeidszqvhugixqxd6ymt2k4toptosyildezsjzebk2prj3cd4yjm6yy"
   );
   await tx.wait();
   const transferTx = await supporterNFT.transferOwnership(DArchive.address);

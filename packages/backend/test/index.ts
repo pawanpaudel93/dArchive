@@ -18,4 +18,16 @@ describe("DArchive", function () {
 
     expect(addTx).to.emit(dArchive, "ArchiveAdded").withArgs(contentID);
   });
+
+  it("Should mint a new soulbound nft for supporter", async function () {
+    const [deployer, supporter] = await ethers.getSigners();
+    const tx = await dArchive.connect(supporter).support({
+      value: ethers.utils.hexStripZeros(
+        ethers.utils.parseEther("1").toHexString()
+      ),
+    });
+    await tx.wait();
+    const supporterNFT = await ethers.getContract("SupporterNFT");
+    expect(await supporterNFT.balanceOf(supporter.address)).to.eq(1);
+  });
 });
