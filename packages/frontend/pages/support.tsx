@@ -52,7 +52,6 @@ Support.displayName = "Support";
 export default function Support() {
   const toast = useToast();
   const [amount, setAmount] = useState(1);
-  const [minAmount, setminAmount] = useState(0.1);
   const [isLoading, setIsLoading] = useState(false);
 
   const chainId = Number(NETWORK_ID);
@@ -210,7 +209,6 @@ export default function Support() {
                     placeholder="Amount"
                     type="number"
                     value={amount}
-                    min={minAmount}
                     bg={"gray.100"}
                     border={0}
                     color={"gray.500"}

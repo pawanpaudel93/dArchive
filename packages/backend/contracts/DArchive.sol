@@ -73,7 +73,7 @@ contract DArchive is ERC2771Recipient, Ownable {
     function withdraw(uint256 amount) external onlyOwner {
         if (address(this).balance >= amount) {
             (bool sent, ) = msg.sender.call{value: amount}("");
-            require(sent, "Failed to send Ether");
+            require(sent, "Failed to withdraw MATIC");
         }
     }
 

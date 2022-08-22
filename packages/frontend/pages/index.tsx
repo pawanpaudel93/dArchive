@@ -55,9 +55,9 @@ export default function Home() {
             </Text>
           </Heading>
           <Text color={"gray.500"}>
-            dArchive is a decentralized archiving dapp that lets you store any
-            URL content anytime to create a digital archive so you can access it
-            forever.
+            dArchive is a decentralized archiving application that lets you
+            snapshot any webpage anytime to create a digital archive so you can
+            access it forever.
           </Text>
           <Stack
             spacing={{ base: 4, sm: 6 }}
