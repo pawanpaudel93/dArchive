@@ -1,0 +1,3 @@
+[submodule "packages/single-file-cli"]
+	path = packages/single-file-cli
+	url = git@github.com:pawanpaudel93/single-file-cli.git
