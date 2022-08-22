@@ -89,7 +89,9 @@ export const Save = () => {
   async function save(url: string) {
     try {
       const response = await fetch(
-        process.env.NEXT_PUBLIC_EXTERNAL_API ?? "/api/html",
+        process.env.NEXT_PUBLIC_EXTERNAL_API
+          ? `${process.env.NEXT_PUBLIC_EXTERNAL_API}/api/v1/html`
+          : "/api/html",
         {
           method: "POST",
           headers: {
@@ -104,7 +106,13 @@ export const Save = () => {
       setContentID(_contentID);
       console.log("contentID: ", _contentID);
       if (_contentID) {
-        const { balance } = await (await fetch("/api/balance")).json();
+        const { balance } = await (
+          await fetch(
+            process.env.NEXT_PUBLIC_EXTERNAL_API
+              ? `${process.env.NEXT_PUBLIC_EXTERNAL_API}/api/v1/balance`
+              : "/api/balance"
+          )
+        ).json();
         if (balance < 0.1) {
           const tx = await writeAsync({
             recklesslySetUnpreparedArgs: [contentID, url, title],
