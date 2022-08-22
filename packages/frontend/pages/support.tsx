@@ -18,12 +18,12 @@ import {
   InputRightAddon,
 } from "@chakra-ui/react";
 import { NETWORK_ID } from "@/config";
-import { useState, useEffect, FormEvent } from "react";
-import bioconomyGasTank from "@/contracts/bioconomy_gastank.json";
-import { useContractRead, useContractWrite } from "wagmi";
-import { BigNumber, ethers } from "ethers";
+import { useState, FormEvent } from "react";
+import { useContractWrite } from "wagmi";
+import { ethers } from "ethers";
 import { getErrorMessage } from "@/parser";
 import { serializeError } from "eth-rpc-errors";
+import contracts from "@/contracts/hardhat_contracts.json";
 
 const avatars = [
   {
@@ -52,49 +52,28 @@ Support.displayName = "Support";
 export default function Support() {
   const toast = useToast();
   const [amount, setAmount] = useState(1);
-  const [minAmount, setminAmount] = useState(0);
+  const [minAmount, setminAmount] = useState(0.1);
   const [isLoading, setIsLoading] = useState(false);
 
-  const gasTankContracts = bioconomyGasTank as any;
   const chainId = Number(NETWORK_ID);
-  const gassTankAddress =
-    gasTankContracts[chainId][0].contracts.DappGasTank.address;
-  const gassTankABI = gasTankContracts[chainId][0].contracts.DappGasTank.abi;
+
+  const allContracts = contracts as any;
+  const dArchiveAddress = allContracts[chainId][0].contracts.DArchive.address;
+  const dArchiveABI = allContracts[chainId][0].contracts.DArchive.abi;
 
   const { writeAsync } = useContractWrite({
     mode: "recklesslyUnprepared",
-    addressOrName: gassTankAddress,
-    contractInterface: gassTankABI,
-    functionName: "depositFor",
-    args: [process.env.NEXT_PUBLIC_BICONOMY_FUNDING_KEY!],
+    addressOrName: dArchiveAddress,
+    contractInterface: dArchiveABI,
+    functionName: "support",
+    args: [],
   });
-
-  const { data: minDeposit } = useContractRead({
-    addressOrName: gassTankAddress,
-    contractInterface: gassTankABI,
-    functionName: "minDeposit",
-  });
-
-  useEffect(() => {
-    if (minDeposit) {
-      const _minDeposit = parseFloat(
-        ethers.utils.formatEther(
-          ((minDeposit as unknown) as BigNumber).toString()
-        )
-      );
-      setminAmount(_minDeposit);
-      setAmount(_minDeposit);
-    }
-  }, [minDeposit]);
 
   async function support(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsLoading(true);
     try {
       const tx = await writeAsync({
-        recklesslySetUnpreparedArgs: [
-          process.env.NEXT_PUBLIC_BICONOMY_FUNDING_KEY!,
-        ],
         recklesslySetUnpreparedOverrides: {
           value: ethers.utils.parseEther(amount.toString()),
         },
@@ -217,9 +196,10 @@ export default function Support() {
               </Text>
             </Heading>
             <Text color={"gray.500"} fontSize={{ base: "sm", sm: "md" }}>
-              All the support will go towards paying the gas fees for you and
-              others. It may be used towards paying for storage, hosting, domain
-              etc too.
+              All the support will go towards paying for storage, hosting,
+              domain and also the gas fees for your and others next save. A
+              soulbound supporter NFT will be minted for you if you are
+              supporting for the first time.
             </Text>
           </Stack>
           <form onSubmit={support}>

@@ -24,6 +24,10 @@ contract SupporterNFT is ERC721, ERC721URIStorage, Ownable {
         _setTokenURI(tokenId, supporterTokenURI);
     }
 
+    function _baseURI() internal pure override returns (string memory) {
+        return "ipfs://";
+    }
+
     function setSupporterTokenURI(string memory uri) external onlyOwner {
         supporterTokenURI = uri;
     }
