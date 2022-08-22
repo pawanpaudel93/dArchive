@@ -181,6 +181,7 @@ export const Save = () => {
     } catch (e) {
       console.log(getErrorMessage(e));
     } finally {
+      setIsLoading(false);
       actions.setSubmitting(false);
     }
   };
