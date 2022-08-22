@@ -81,6 +81,7 @@ export default function Home() {
               fontWeight={"normal"}
               px={6}
               leftIcon={<PlayIcon h={4} w={4} color={"gray.300"} />}
+              onClick={() => router.push("/how-it-works")}
             >
               How It Works
             </Button>
