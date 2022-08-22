@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=200px height=200px src="https://raw.githubusercontent.com/pawanpaudel93/beatbox-competition-dapp/370e7722377731263e4184ea067a1a849cbbf473/public/logo.png" alt="dArchive"></a>
+ <img width=200px height=200px src="packages/frontend/public/logo.png" alt="dArchive"></a>
 </p>
 
 <h3 align="center">dArchive</h3> 
