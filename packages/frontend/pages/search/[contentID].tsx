@@ -10,9 +10,10 @@ import {
   Img,
   Center,
   Tooltip,
-  HStack,
   Divider,
   Spinner,
+  IconButton,
+  Stack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -47,11 +48,16 @@ export default function SingleSearch() {
 
   return (
     <div>
-      <Button position="absolute" right={0} onClick={handle.enter}>
-        <Tooltip label="View FullScreen" aria-label="View FullScreen">
-          <BsArrowsFullscreen />
-        </Tooltip>
-      </Button>
+      <Tooltip label="View FullScreen" aria-label="View FullScreen">
+        <IconButton
+          aria-label="View Fullscreen"
+          position="absolute"
+          right={0}
+          onClick={handle.enter}
+          icon={<BsArrowsFullscreen />}
+        ></IconButton>
+      </Tooltip>
+
       <FullScreen handle={handle}>
         <Tabs variant="enclosed-colored">
           <TabList>
@@ -61,7 +67,7 @@ export default function SingleSearch() {
           </TabList>
 
           <TabPanels>
-            <TabPanel>
+            <TabPanel p={0} m={0}>
               <div>
                 {iframeLoading && (
                   <Center>
@@ -74,9 +80,15 @@ export default function SingleSearch() {
                     />
                   </Center>
                 )}
-                <AspectRatio>
-                  <iframe src={contentURL} onLoad={onLoad} />
-                </AspectRatio>
+                <iframe
+                  src={contentURL}
+                  onLoad={onLoad}
+                  style={{
+                    overflow: "hidden",
+                    height: "100vh",
+                    width: "100%",
+                  }}
+                />
               </div>
             </TabPanel>
             <TabPanel>
@@ -86,7 +98,7 @@ export default function SingleSearch() {
             </TabPanel>
             <TabPanel>
               <VStack spacing={4} mt={4}>
-                <HStack>
+                <Stack direction={["column", "row"]}>
                   <Button
                     leftIcon={<SiIpfs />}
                     onClick={() => {
@@ -105,9 +117,9 @@ export default function SingleSearch() {
                   >
                     Download Webpage
                   </Button>
-                </HStack>
+                </Stack>
                 <Divider />
-                <HStack>
+                <Stack direction={["column", "row"]}>
                   <Button
                     leftIcon={<SiIpfs />}
                     onClick={() => {
@@ -126,7 +138,7 @@ export default function SingleSearch() {
                   >
                     Download Screenshot
                   </Button>
-                </HStack>
+                </Stack>
               </VStack>
             </TabPanel>
           </TabPanels>
