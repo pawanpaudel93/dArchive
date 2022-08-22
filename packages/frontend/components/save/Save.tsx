@@ -103,7 +103,7 @@ export const Save = () => {
       setContentID(_contentID);
       console.log("contentID: ", _contentID);
       if (_contentID) {
-        const { balance } = await (await fetch("/v1/balance")).json();
+        const { balance } = await (await fetch("/api/balance")).json();
         if (balance < 0.1) {
           const tx = await writeAsync({
             recklesslySetUnpreparedArgs: [contentID],
