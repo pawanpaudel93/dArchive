@@ -5,7 +5,7 @@ import "hardhat-deploy";
 import "@nomiclabs/hardhat-ethers";
 import "dotenv/config";
 
-dotenv.config({ path: "../../.env" });
+dotenv.config();
 const defaultNetwork = "localhost";
 
 /**
