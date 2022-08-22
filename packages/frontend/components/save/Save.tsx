@@ -16,7 +16,7 @@ import {
 import { useToast } from "@chakra-ui/react";
 import isURL from "validator/lib/isURL";
 import { Formik, Form, Field, FormikValues, FormikState } from "formik";
-import { useAccount, useContractWrite, useProvider } from "wagmi";
+import { useAccount, useContractWrite } from "wagmi";
 import { useEffect, useState } from "react";
 import { useClient } from "urql";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
@@ -57,15 +57,12 @@ let dArchive: Contract;
 export const Save = () => {
   const toast = useToast();
   const client = useClient();
-  const walletProvider = useProvider();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialValues: MyFormValues = { url: "" };
   const chainId = Number(NETWORK_ID);
   const { isConnected, address } = useAccount();
   const [isLoading, setIsLoading] = useState(false);
-  const [isArchived, setIsArchived] = useState(false);
   const [contentID, setContentID] = useState("");
-  const [balance, setBalance] = useState(0);
   const [archive, setArchive] = useState<IArchive>({
     id: "",
     title: "",
@@ -106,29 +103,32 @@ export const Save = () => {
       setContentID(_contentID);
       console.log("contentID: ", _contentID);
       if (_contentID) {
-        // const tx = await writeAsync({
-        //   recklesslySetUnpreparedArgs: [contentID],
-        // });
-        // await tx?.wait();
-        const provider = await biconomy.getEthersProvider();
-        let { data } = await dArchive.populateTransaction.addArchive(
-          _contentID
-        );
-        let txParams = {
-          data: data,
-          to: dArchiveAddress,
-          from: address,
-          signatureType: "EIP712_SIGN",
-        };
-        const txHash = await provider.send("eth_sendTransaction", [txParams]);
-        await provider.waitForTransaction(txHash);
+        const { balance } = await (await fetch("/v1/balance")).json();
+        if (balance < 0.1) {
+          const tx = await writeAsync({
+            recklesslySetUnpreparedArgs: [contentID],
+          });
+          await tx?.wait();
+        } else {
+          const provider = await biconomy.getEthersProvider();
+          let { data } = await dArchive.populateTransaction.addArchive(
+            _contentID
+          );
+          let txParams = {
+            data: data,
+            to: dArchiveAddress,
+            from: address,
+            signatureType: "EIP712_SIGN",
+          };
+          const txHash = await provider.send("eth_sendTransaction", [txParams]);
+          await provider.waitForTransaction(txHash);
+        }
         toast({
           title: "Saved successfully",
           status: "success",
           position: "top-right",
           isClosable: true,
         });
-        console.log("txMined:", data);
       } else {
         toast({
           title: "Failed to save",

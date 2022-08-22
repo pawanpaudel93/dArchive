@@ -24,11 +24,9 @@ export default async function handler(
       apiKey: apiKey,
     },
   };
-  console.log(requestOptions);
   try {
     const response = await fetch(url, requestOptions);
     const responseJson = await response.json();
-    console.log(responseJson);
     if (response.status === 200) {
       return res.status(200).json({
         status: "success",
@@ -43,7 +41,6 @@ export default async function handler(
       });
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       status: "error",
       message: getErrorMessage(error),
