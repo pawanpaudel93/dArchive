@@ -17,6 +17,7 @@
 - [About](#about)
 - [Usage](#usage)
 - [Built Using](#built_using)
+- [Folder Structure](#packages)
 - [Authors](#authors)
 - [Thanks](#thanks)
 
@@ -54,6 +55,16 @@ It allows a user to save a webpage HTML, screenshot, and metadata to the decentr
 - [Nextjs](https://nextjs.org/) - Reactjs Web Development Framework
 - [Chakra UI](https://chakra-ui.com/) - A simple, modular and accessible component library.
 - [single-file-cli](https://github.com/gildas-lormeau/single-file-cli) - Single HTML File Saver
+
+## 🧐 Folder Structure <a name = "packages"></a>
+    .
+    ├── packages              # All workspaces
+    │   ├── api               # Express apis for running single-file-cli and uploading the folder using web3.storage and checking biconomy balance.
+    │   ├── backend           # Solidity contracts with Hardhat development environment.
+    │   ├── misc.md           # Next.js frontend and some apis
+    │   ├── single-file-cli   # CLI tool to capture HTML, screenshot and metadata (title and URL).
+    │   └── subgraph          # The graph's subgraph for indexing and querying saved webpages.
+    └── ...
 
 ## ✍️ Authors <a name = "authors"></a>
 
