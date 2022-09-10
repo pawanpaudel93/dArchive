@@ -166,19 +166,19 @@ export default function About() {
         </Heading>
         <Stack direction={["column", "row"]} boxShadow={"2xl"} p={10}>
           <Link href="https://polygon.technology/">
-            <Image h={"120px"} w={"full"} src={"polygon.svg"} />
+            <Image h={"120px"} w={"full"} src="/polygon.svg" />
           </Link>
           <Link href="https://ipfs.tech/">
-            <Image h={"120px"} w={"full"} src={"ipfs.png"} />
+            <Image h={"120px"} w={"full"} src="/ipfs.png" />
           </Link>
           <Link href="https://filecoin.io/">
-            <Image h={"120px"} w={"full"} src={"filecoin.png"} />
+            <Image h={"120px"} w={"full"} src="/filecoin.png" />
           </Link>
           <Link href="https://web3.storage/">
-            <Image h={"120px"} w={"full"} src={"web3.storage.png"} />
+            <Image h={"120px"} w={"full"} src="/web3.storage.png" />
           </Link>
           <Link href="https://spheron.network/">
-            <Image h={"120px"} w={"full"} src={"spheron.jpeg"} />
+            <Image h={"120px"} w={"full"} src="/spheron.jpeg" />
           </Link>
         </Stack>
       </VStack>
