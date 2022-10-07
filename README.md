@@ -49,6 +49,7 @@ It allows a user to save a webpage HTML, screenshot, and metadata to the decentr
 - [Web3.storage](https://web3.storage/) - Decentralized Data Storage
 - [Polygon](https://polygon.technology) - Blockchain
 - [Spheron](https://spheron.network/) - Deploy Your Full Stack App to the Decentralized cloud
+- [Alchemy](https://alchemy.com/) - Web3 Development Tools
 - [Solidity](https://docs.soliditylang.org/) -  Smart Contract Programming
 - [Hardhat](https://hardhat.org/) - Ethereum Development Environment
 - [RainbowKit](https://www.rainbowkit.com/) - The best way to connect a wallet
