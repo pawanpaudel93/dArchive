@@ -106,34 +106,20 @@ export const Save = () => {
       setContentID(_contentID);
       console.log("contentID: ", _contentID);
       if (_contentID) {
-        const { balance } = await (
-          await fetch(
-            process.env.NEXT_PUBLIC_EXTERNAL_API
-              ? `${process.env.NEXT_PUBLIC_EXTERNAL_API}/api/v1/balance`
-              : "/api/balance"
-          )
-        ).json();
-        if (balance < 0.1) {
-          const tx = await writeAsync({
-            recklesslySetUnpreparedArgs: [contentID, url, title],
-          });
-          await tx?.wait();
-        } else {
-          const provider = await biconomy.getEthersProvider();
-          let { data } = await dArchive.populateTransaction.addArchive(
-            _contentID,
-            url,
-            title
-          );
-          let txParams = {
-            data: data,
-            to: dArchiveAddress,
-            from: address,
-            signatureType: "EIP712_SIGN",
-          };
-          const txHash = await provider.send("eth_sendTransaction", [txParams]);
-          await provider.waitForTransaction(txHash);
-        }
+        const provider = await biconomy.getEthersProvider();
+        let { data } = await dArchive.populateTransaction.addArchive(
+          _contentID,
+          url,
+          title
+        );
+        let txParams = {
+          data: data,
+          to: dArchiveAddress,
+          from: address,
+          signatureType: "EIP712_SIGN",
+        };
+        const txHash = await provider.send("eth_sendTransaction", [txParams]);
+        await provider.waitForTransaction(txHash);
         toast({
           title: "Saved successfully",
           status: "success",
